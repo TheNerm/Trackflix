@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Trackflix</string>
+    <string name="title_activity_main">Trackflix</string>
 </resources>
