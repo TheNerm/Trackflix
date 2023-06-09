@@ -1,6 +1,7 @@
 package com.example.trackflix.fragments.list
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -48,6 +49,8 @@ class ListFragment : Fragment() {
         binding.floatingActionButton.setOnClickListener{
             findNavController().navigate(R.id.action_listFragment_to_addFragment)
         }
+
+        Log.i("TEST", "this should try to create the list fragment")
 
         return view
     }
