@@ -6,8 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trackflix.R
+import com.example.trackflix.database.TrackableViewModel
 import com.example.trackflix.databinding.FragmentListBinding
 
 //// TODO: Rename parameter arguments, choose names that match
@@ -34,6 +38,7 @@ class ListFragment : Fragment() {
 //    }
 
     private lateinit var binding: FragmentListBinding
+    private lateinit var myTrackableViewModel: TrackableViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +50,17 @@ class ListFragment : Fragment() {
 
         binding = FragmentListBinding.inflate(layoutInflater, container, false)
         val view = binding.root
+
+
+        val adapter = ListAdapter()
+        val recyclerView = binding.recyclerView
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        myTrackableViewModel = ViewModelProvider(this).get(TrackableViewModel::class.java)
+        myTrackableViewModel.readAllData.observe(viewLifecycleOwner, Observer {trackable ->
+            adapter.setData(trackable)
+        })
 
         binding.floatingActionButton.setOnClickListener{
             findNavController().navigate(R.id.action_listFragment_to_addFragment)

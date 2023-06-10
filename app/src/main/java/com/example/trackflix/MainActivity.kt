@@ -19,8 +19,6 @@ import com.example.trackflix.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var myTrackableViewModel: TrackableViewModel
-    private var categories = ArrayList<String>()
 
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,12 +26,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
-        myTrackableViewModel = ViewModelProvider(this)[TrackableViewModel::class.java]
-        categories.add("book")
-        categories.add("movie")
-        categories.add("series")
-        categories.add("game")
 
         //view binding doesn't work here
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
@@ -44,35 +36,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-    public fun getCategories(): ArrayList<String>{
-        return categories
+    override fun onSupportNavigateUp(): Boolean {
+        return findNavController(R.id.fragmentContainerView).navigateUp() || super.onSupportNavigateUp()
     }
 
-    public fun insertDataToDatabase(){
 
-        //replace this with actual data read from our view
-        val title = "TestBook"
-        val goal = 100
-        //use: [TrackableType from <String in lowercase>]
-        val type = "book"
+//    public fun getCategories(): ArrayList<String>{
+//        return categories
+//    }
 
-
-
-        if(inputCheck(title, goal, type) && type!=null){
-            //id is primary key and will be auto-generated, so we just need to specify to start at 0
-            val trackable = Trackable(0, title, 0, goal, type)
-            //add data to database
-            myTrackableViewModel.addTrackable(trackable)
-            Toast.makeText(this, "Successfully added!", Toast.LENGTH_LONG).show()
-        }else{
-            Toast.makeText(this, "Please fill out all fields!", Toast.LENGTH_LONG).show()
-        }
-    }
-
-    private fun inputCheck(title: String, goal: Int, type: String): Boolean {
-        return !(TextUtils.isEmpty(title) || goal==0 || TextUtils.isEmpty(type) || !categories.contains(type))
-    }
 
 
 }

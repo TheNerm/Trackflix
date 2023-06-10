@@ -27,7 +27,7 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/goal"
-        android:inputType="text"
+        android:inputType="number"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,25 +45,25 @@
         app:layout_constraintTop_toBottomOf="@+id/trackableGoal">
 
         <RadioButton
-            android:id="@+id/rbBook"
+            android:id="@+id/book"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/book" />
 
         <RadioButton
-            android:id="@+id/rbMovie"
+            android:id="@+id/movie"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/movie" />
 
         <RadioButton
-            android:id="@+id/rbSeries"
+            android:id="@+id/series"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/series" />
 
         <RadioButton
-            android:id="@+id/rbGame"
+            android:id="@+id/game"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/game" />

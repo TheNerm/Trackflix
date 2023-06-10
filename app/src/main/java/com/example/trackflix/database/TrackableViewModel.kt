@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 
 class TrackableViewModel(application: Application): AndroidViewModel(application) {
 
-    private val readAllData: LiveData<List<Trackable>>
+    val readAllData: LiveData<List<Trackable>>
     private val repository: TrackableRepository
 
     init{
