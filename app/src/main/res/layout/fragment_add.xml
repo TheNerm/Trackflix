@@ -42,16 +42,44 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trackableGoal" />
+        app:layout_constraintTop_toBottomOf="@+id/trackableGoal">
+
+        <RadioButton
+            android:id="@+id/rbBook"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/book" />
+
+        <RadioButton
+            android:id="@+id/rbMovie"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/movie" />
+
+        <RadioButton
+            android:id="@+id/rbSeries"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/series" />
+
+        <RadioButton
+            android:id="@+id/rbGame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/game" />
+
+    </RadioGroup>
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Add"
+        android:text="@string/add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/trackableType" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

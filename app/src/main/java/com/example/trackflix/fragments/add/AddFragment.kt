@@ -39,25 +39,33 @@ class AddFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        binding = FragmentAddBinding.inflate(layoutInflater)
+        binding = FragmentAddBinding.inflate(layoutInflater, container, false)
 
-        addRadioButtons()
 
-        return inflater.inflate(R.layout.fragment_add, container, false)
-    }
-
-    public fun addRadioButtons(){
-        val rdgroup = binding.trackableType
-        val categories = (activity as MainActivity?)?.getCategories()
-        if (categories!= null){
-            for (category in categories){
-                val rdbtn = RadioButton(activity)
-                rdbtn.id = View.generateViewId()
-                rdbtn.text = category
-                rdgroup.addView(rdbtn)
-            }
+        binding.button.setOnClickListener{
+            insertDataToDatabase()
         }
+
+
+        return binding.root
     }
+
+    private fun insertDataToDatabase() {
+          
+    }
+
+//    public fun addRadioButtons(){
+//        val rdgroup = binding.trackableType
+//        val categories = (activity as MainActivity?)?.getCategories()
+//        if (categories!= null){
+//            for (category in categories){
+//                val rdbtn = RadioButton(activity)
+//                rdbtn.id = View.generateViewId()
+//                rdbtn.text = category
+//                rdgroup.addView(rdbtn)
+//            }
+//        }
+//    }
 
 //    companion object {
 //        /**
