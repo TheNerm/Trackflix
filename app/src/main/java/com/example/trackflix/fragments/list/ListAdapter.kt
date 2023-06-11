@@ -1,11 +1,10 @@
 package com.example.trackflix.fragments.list
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.example.trackflix.R
-import com.example.trackflix.database.Trackable
+import com.example.trackflix.model.Trackable
 import com.example.trackflix.databinding.CustomRowBinding
 
 class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
@@ -37,6 +36,12 @@ class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
             currentItem.goal/currentItem.currentProgress
         }
         holder.itemBinding.tbPercentage.text = "$percentage%"
+
+        holder.itemBinding.rowElement.setOnClickListener{
+            val action = ListFragmentDirections.actionListFragmentToUpdateFragment(currentItem)
+            Navigation.findNavController(holder.itemBinding.root).navigate(action)
+        }
+
     }
 
     fun setData(trackable: List<Trackable>){

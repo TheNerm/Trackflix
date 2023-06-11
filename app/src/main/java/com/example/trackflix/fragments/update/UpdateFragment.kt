@@ -1,19 +1,18 @@
-package com.example.trackflix.fragments.add
+package com.example.trackflix.fragments.update
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.trackflix.R
+import com.example.trackflix.databinding.FragmentUpdateBinding
 import com.example.trackflix.model.Trackable
 import com.example.trackflix.viewModel.TrackableViewModel
-import com.example.trackflix.databinding.FragmentAddBinding
-import java.lang.Exception
-
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,11 +21,11 @@ import java.lang.Exception
 
 /**
  * A simple [Fragment] subclass.
- * Use the [AddFragment.newInstance] factory method to
+ * Use the [UpdateFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AddFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+class UpdateFragment : Fragment() {
+//    // TODO: Rename and change types of parameters
 //    private var param1: String? = null
 //    private var param2: String? = null
 //
@@ -38,53 +37,61 @@ class AddFragment : Fragment() {
 //        }
 //    }
 
-    private lateinit var binding: FragmentAddBinding
+    private val args by navArgs<UpdateFragmentArgs>()
+    private lateinit var binding: FragmentUpdateBinding
     private lateinit var myTrackableViewModel: TrackableViewModel
-    private var categories = ArrayList<String>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentAddBinding.inflate(layoutInflater, container, false)
+        binding = FragmentUpdateBinding.inflate(layoutInflater, container, false)
+        val view = binding.root
 
-        categories.add("Book")
-        categories.add("Movie")
-        categories.add("Series")
-        categories.add("Game")
+        myTrackableViewModel = ViewModelProvider(this).get(TrackableViewModel::class.java)
 
-        binding.button.setOnClickListener{
-            insertDataToDatabase()
+        binding.trackableTitle.setText(args.currentTrackable.title)
+        binding.trackableGoal.setText(args.currentTrackable.goal.toString())
+        when(args.currentTrackable.type){
+            "Book" -> binding.trackableType.check(binding.book.id)
+            "Movie" -> binding.trackableType.check(binding.movie.id)
+            "Series" -> binding.trackableType.check(binding.series.id)
+            "Game" -> binding.trackableType.check(binding.game.id)
         }
 
-        myTrackableViewModel = ViewModelProvider(this)[TrackableViewModel::class.java]
+        binding.button.setOnClickListener{
+            updateTrackable()
+        }
 
-        return binding.root
+        return view
     }
-    public fun insertDataToDatabase(){
 
-        //check inputs
-        if(inputCheck()){
+    private fun updateTrackable() {
+        if(inputCheck()) {
             //replace this with actual data read from our view
             val title = binding.trackableTitle.text.toString()
             val goal = Integer.parseInt(binding.trackableGoal.text.toString())
             val type: String
-            when (binding.trackableType.checkedRadioButtonId){
+            when (binding.trackableType.checkedRadioButtonId) {
                 binding.book.id -> type = binding.book.text.toString()
                 binding.movie.id -> type = binding.movie.text.toString()
                 binding.series.id -> type = binding.series.text.toString()
                 binding.game.id -> type = binding.game.text.toString()
                 else -> {
-                    Toast.makeText(requireContext(), "Please fill out all fields!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Please fill out all fields!",
+                        Toast.LENGTH_LONG
+                    ).show()
                     return
                 }
             }
-
-            //id is primary key and will be auto-generated, so we just need to specify to start at 0
-            val trackable = Trackable(0, title, 0, goal, type)
-            //add data to database
-            myTrackableViewModel.addTrackable(trackable)
-            Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()
-            findNavController().navigate(R.id.action_addFragment_to_listFragment)
+            //update user
+            val updatedTrackable = Trackable(args.currentTrackable.id, title, args.currentTrackable.currentProgress, goal,type)
+            myTrackableViewModel.updateTrackable(updatedTrackable)
+            Toast.makeText(requireContext(), "Successfully updated!", Toast.LENGTH_LONG).show()
+            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
         }else{
             Toast.makeText(requireContext(), "Please fill out all fields!", Toast.LENGTH_LONG).show()
         }
@@ -117,25 +124,9 @@ class AddFragment : Fragment() {
             return false
         }
 
-        if(!categories.contains(checkType)){
-            return false
-        }
-
         return true
     }
 
-//    public fun addRadioButtons(){
-//        val rdgroup = binding.trackableType
-//        val categories = (activity as MainActivity?)?.getCategories()
-//        if (categories!= null){
-//            for (category in categories){
-//                val rdbtn = RadioButton(activity)
-//                rdbtn.id = View.generateViewId()
-//                rdbtn.text = category
-//                rdgroup.addView(rdbtn)
-//            }
-//        }
-//    }
 
 //    companion object {
 //        /**
@@ -144,15 +135,16 @@ class AddFragment : Fragment() {
 //         *
 //         * @param param1 Parameter 1.
 //         * @param param2 Parameter 2.
-//         * @return A new instance of fragment AddFragment.
+//         * @return A new instance of fragment UpdateFragment.
 //         */
 //        // TODO: Rename and change types and number of parameters
-//        @JvmStatic fun newInstance(param1: String, param2: String) =
-//                AddFragment().apply {
-//                    arguments = Bundle().apply {
-//                        putString(ARG_PARAM1, param1)
-//                        putString(ARG_PARAM2, param2)
-//                    }
+//        @JvmStatic
+//        fun newInstance(param1: String, param2: String) =
+//            UpdateFragment().apply {
+//                arguments = Bundle().apply {
+//                    putString(ARG_PARAM1, param1)
+//                    putString(ARG_PARAM2, param2)
 //                }
+//            }
 //    }
 }

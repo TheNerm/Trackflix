@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trackflix.R
-import com.example.trackflix.database.TrackableViewModel
+import com.example.trackflix.viewModel.TrackableViewModel
 import com.example.trackflix.databinding.FragmentListBinding
 
 //// TODO: Rename parameter arguments, choose names that match

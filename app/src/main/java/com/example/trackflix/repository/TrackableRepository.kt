@@ -1,6 +1,8 @@
-package com.example.trackflix.database
+package com.example.trackflix.repository
 
 import androidx.lifecycle.LiveData
+import com.example.trackflix.database.TrackableDao
+import com.example.trackflix.model.Trackable
 
 class TrackableRepository(private val trackableDao: TrackableDao) {
 
@@ -8,6 +10,10 @@ class TrackableRepository(private val trackableDao: TrackableDao) {
 
     suspend fun addTrackable(trackable: Trackable){
         trackableDao.insertTrackable(trackable)
+    }
+
+    suspend fun updateTrackable (trackable: Trackable){
+        trackableDao.updateTrackable(trackable)
     }
 
 }

@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.example.trackflix.model.Trackable
 
 @Dao
 interface TrackableDao {
@@ -24,6 +25,6 @@ interface TrackableDao {
     fun delete(trackable: Trackable)
 
     @Update
-    fun updateUsers(vararg trackable: Trackable)
+    fun updateTrackable(vararg trackable: Trackable)
 
 }
