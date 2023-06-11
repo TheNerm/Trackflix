@@ -12,8 +12,16 @@ class TrackableRepository(private val trackableDao: TrackableDao) {
         trackableDao.insertTrackable(trackable)
     }
 
-    suspend fun updateTrackable (trackable: Trackable){
+    suspend fun updateTrackable(trackable: Trackable){
         trackableDao.updateTrackable(trackable)
+    }
+
+    suspend fun deleteTrackable(trackable: Trackable){
+        trackableDao.deleteTrackable(trackable)
+    }
+
+    suspend fun deleteAllTrackables(){
+        trackableDao.deleteAllTrackables()
     }
 
 }

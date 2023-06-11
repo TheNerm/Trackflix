@@ -33,6 +33,18 @@ class TrackableViewModel(application: Application): AndroidViewModel(application
         }
     }
 
+    fun deleteTrackable(trackable: Trackable){
+        viewModelScope.launch(Dispatchers.IO){
+            repository.deleteTrackable(trackable)
+        }
+    }
+
+    fun deleteAllTrackables(){
+        viewModelScope.launch(Dispatchers.IO){
+            repository.deleteAllTrackables()
+        }
+    }
+
 
 
 }

@@ -16,15 +16,18 @@ interface TrackableDao {
     //if we need it as list, just use List<Trackable>
 
     @Insert
-    fun insertAll(vararg trackable: Trackable)
+    suspend fun insertAllTrackables(vararg trackable: Trackable)
 
     @Insert
-    fun insertTrackable(trackable: Trackable)
+    suspend fun insertTrackable(trackable: Trackable)
 
     @Delete
-    fun delete(trackable: Trackable)
+    suspend fun deleteTrackable(trackable: Trackable)
+
+    @Query("DELETE  FROM trackable_table")
+    suspend fun deleteAllTrackables()
 
     @Update
-    fun updateTrackable(vararg trackable: Trackable)
+    suspend fun updateTrackable(vararg trackable: Trackable)
 
 }
