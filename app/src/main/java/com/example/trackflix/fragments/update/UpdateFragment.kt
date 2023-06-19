@@ -58,10 +58,23 @@ class UpdateFragment : Fragment() {
         binding.trackableTitle.setText(args.currentTrackable.title)
         binding.trackableGoal.setText(args.currentTrackable.goal.toString())
         when(args.currentTrackable.type){
-            "Book" -> binding.trackableType.check(binding.book.id)
-            "Movie" -> binding.trackableType.check(binding.movie.id)
-            "Series" -> binding.trackableType.check(binding.series.id)
-            "Game" -> binding.trackableType.check(binding.game.id)
+            "Book" -> {
+                binding.trackableType.check(binding.book.id)
+                binding.tVGoalType.setText(R.string.sides)
+                binding.TVWatchedType.setText(R.string.sides)}
+            "Movie" -> {
+                binding.trackableType.check(binding.movie.id)
+                binding.tVGoalType.setText(R.string.hours)
+                binding.TVWatchedType.setText(R.string.hours)}
+            "Series" -> {
+                binding.trackableType.check(binding.series.id)
+                binding.tVGoalType.setText(R.string.hours)
+                binding.TVWatchedType.setText(R.string.hours)}
+            "Game" -> {
+                binding.trackableType.check(binding.game.id)
+                binding.tVGoalType.setText(R.string.hours)
+                binding.TVWatchedType.setText(R.string.hours)
+            }
         }
 
         binding.button.setOnClickListener{

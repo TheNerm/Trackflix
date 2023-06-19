@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.update.UpdateFragment">
 
     <EditText
         android:id="@+id/trackableTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="32dp"
         android:ems="10"
         android:hint="@string/title"
         android:importantForAutofill="no"
@@ -20,29 +22,88 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/trackableGoal"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:id="@+id/lLWatched"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="@string/goal"
-        android:inputType="number"
-        android:minHeight="48dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="32dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trackableTitle"
-        android:importantForAutofill="no" />
+        app:layout_constraintTop_toBottomOf="@+id/trackableTitle">
+
+        <EditText
+            android:id="@+id/trackableWatched"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            android:ems="10"
+            android:hint="@string/watched"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:minHeight="48dp" />
+
+        <TextView
+            android:id="@+id/TVWatchedType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:minHeight="48dp"
+            android:text=""
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lLGoal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lLWatched">
+
+        <EditText
+            android:id="@+id/trackableGoal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            android:ems="10"
+            android:hint="@string/goal"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:minHeight="48dp" />
+
+        <TextView
+            android:id="@+id/tVGoalType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:minHeight="48dp"
+            android:text=""
+            android:textSize="18sp" />
+    </LinearLayout>
 
     <RadioGroup
         android:id="@+id/trackableType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="32dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trackableGoal">
+        app:layout_constraintTop_toBottomOf="@+id/lLGoal">
 
         <RadioButton
             android:id="@+id/book"
@@ -74,7 +135,9 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="140dp"
         android:text="@string/update"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
