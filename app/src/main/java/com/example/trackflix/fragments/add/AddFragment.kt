@@ -80,7 +80,7 @@ class AddFragment : Fragment() {
             }
 
             //id is primary key and will be auto-generated, so we just need to specify to start at 0
-            val trackable = Trackable(0, title, 0, goal, type)
+            val trackable = Trackable(0, title, 0, goal, type,0f)
             //add data to database
             myTrackableViewModel.addTrackable(trackable)
             Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()

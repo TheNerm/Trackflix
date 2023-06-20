@@ -59,6 +59,7 @@ class UpdateFragment : Fragment() {
         binding.trackableTitle.setText(args.currentTrackable.title)
         binding.trackableGoal.setText(args.currentTrackable.goal.toString())
         binding.trackableWatched.setText(args.currentTrackable.currentProgress.toString())
+        binding.priorityRB.rating = args.currentTrackable.prio
         when(args.currentTrackable.type){
             "Book" -> {
                 binding.trackableType.check(binding.book.id)
@@ -95,6 +96,7 @@ class UpdateFragment : Fragment() {
             val title = binding.trackableTitle.text.toString()
             val goal = Integer.parseInt(binding.trackableGoal.text.toString())
             val type: String
+            val prio = binding.priorityRB.rating
             when (binding.trackableType.checkedRadioButtonId) {
                 binding.book.id -> type = binding.book.text.toString()
                 binding.movie.id -> type = binding.movie.text.toString()
@@ -110,7 +112,7 @@ class UpdateFragment : Fragment() {
                 }
             }
             //update user
-            val updatedTrackable = Trackable(args.currentTrackable.id, title, args.currentTrackable.currentProgress, goal,type)
+            val updatedTrackable = Trackable(args.currentTrackable.id, title, args.currentTrackable.currentProgress, goal,type,prio)
             myTrackableViewModel.updateTrackable(updatedTrackable)
             Toast.makeText(requireContext(), "Successfully updated!", Toast.LENGTH_LONG).show()
             findNavController().navigate(R.id.action_updateFragment_to_listFragment)
