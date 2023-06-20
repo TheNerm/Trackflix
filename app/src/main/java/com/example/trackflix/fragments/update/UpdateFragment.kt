@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RatingBar
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -57,6 +58,7 @@ class UpdateFragment : Fragment() {
 
         binding.trackableTitle.setText(args.currentTrackable.title)
         binding.trackableGoal.setText(args.currentTrackable.goal.toString())
+        binding.trackableWatched.setText(args.currentTrackable.currentProgress.toString())
         when(args.currentTrackable.type){
             "Book" -> {
                 binding.trackableType.check(binding.book.id)
