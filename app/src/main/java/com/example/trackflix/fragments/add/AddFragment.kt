@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -56,6 +59,19 @@ class AddFragment : Fragment() {
             insertDataToDatabase()
         }
 
+        binding.trackableType.setOnCheckedChangeListener{ group, checkedId ->
+            val radiobutton = binding.trackableType.findViewById<RadioButton>(checkedId)
+            val selectedChoice = radiobutton.text.toString()
+
+            if(selectedChoice == "Book" ){
+                binding.tVWatchedType.setText(R.string.sides)
+                binding.tVGoalType.setText(R.string.sides)
+            }else{
+                binding.tVWatchedType.setText(R.string.hours)
+                binding.tVGoalType.setText(R.string.hours)
+            }
+        }
+
         myTrackableViewModel = ViewModelProvider(this)[TrackableViewModel::class.java]
 
         return binding.root
@@ -68,6 +84,14 @@ class AddFragment : Fragment() {
             val title = binding.trackableTitle.text.toString()
             val goal = Integer.parseInt(binding.trackableGoal.text.toString())
             val type: String
+            val progresstxt = binding.trackableCompleted.text.toString().trim()
+            var progress = 0
+            val prio = binding.priorityRB.rating
+
+            if(progresstxt.isNotEmpty()){
+                progress = Integer.parseInt(progresstxt)
+            }
+
             when (binding.trackableType.checkedRadioButtonId){
                 binding.book.id -> type = binding.book.text.toString()
                 binding.movie.id -> type = binding.movie.text.toString()
@@ -80,7 +104,7 @@ class AddFragment : Fragment() {
             }
 
             //id is primary key and will be auto-generated, so we just need to specify to start at 0
-            val trackable = Trackable(0, title, 0, goal, type,0f)
+            val trackable = Trackable(0, title, progress, goal, type,prio)
             //add data to database
             myTrackableViewModel.addTrackable(trackable)
             Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()
