@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.example.trackflix.model.Trackable
 import com.example.trackflix.databinding.CustomRowBinding
+import com.example.trackflix.model.Trackable
 
 class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
@@ -26,16 +26,19 @@ class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = trackableList[position]
-        holder.itemBinding.tbID.text =  currentItem.id.toString()
         holder.itemBinding.tbTitle.text = currentItem.title
-        holder.itemBinding.tbType.text = currentItem.type
-
+        holder.itemBinding.tbPriority.text = (currentItem.prio * 2).toInt().toString()
         val percentage = if (currentItem.currentProgress == 0){
             0
         }else{
-            currentItem.goal/currentItem.currentProgress
+            (100*(currentItem.currentProgress.toFloat()/currentItem.goal.toFloat())).toInt()
         }
+        //primary progress bar
         holder.itemBinding.tbPercentage.text = "$percentage%"
+        holder.itemBinding.progressBar.progress=percentage
+        //secondary progress bar
+        val secondProgress = percentage -100
+        holder.itemBinding.progressBar.secondaryProgress= secondProgress.coerceAtLeast(0)
 
         holder.itemBinding.rowElement.setOnClickListener{
             val action = ListFragmentDirections.actionListFragmentToUpdateFragment(currentItem)
