@@ -13,5 +13,6 @@ data class Trackable(
     val title: String,
     val currentProgress: Int,
     val goal: Int,
-    val type: String
+    val type: String,
+    val prio: Float
 ): Parcelable

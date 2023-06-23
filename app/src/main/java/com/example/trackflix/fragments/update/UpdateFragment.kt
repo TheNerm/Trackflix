@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RatingBar
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -57,11 +58,26 @@ class UpdateFragment : Fragment() {
 
         binding.trackableTitle.setText(args.currentTrackable.title)
         binding.trackableGoal.setText(args.currentTrackable.goal.toString())
+        binding.trackableCompleted.setText(args.currentTrackable.currentProgress.toString())
+        binding.priorityRB.rating = args.currentTrackable.prio
         when(args.currentTrackable.type){
-            "Book" -> binding.trackableType.check(binding.book.id)
-            "Movie" -> binding.trackableType.check(binding.movie.id)
-            "Series" -> binding.trackableType.check(binding.series.id)
-            "Game" -> binding.trackableType.check(binding.game.id)
+            "Book" -> {
+                binding.trackableType.check(binding.book.id)
+                binding.tVGoalType.setText(R.string.sides)
+                binding.tVWatchedType.setText(R.string.sides)}
+            "Movie" -> {
+                binding.trackableType.check(binding.movie.id)
+                binding.tVGoalType.setText(R.string.hours)
+                binding.tVWatchedType.setText(R.string.hours)}
+            "Series" -> {
+                binding.trackableType.check(binding.series.id)
+                binding.tVGoalType.setText(R.string.hours)
+                binding.tVWatchedType.setText(R.string.hours)}
+            "Game" -> {
+                binding.trackableType.check(binding.game.id)
+                binding.tVGoalType.setText(R.string.hours)
+                binding.tVWatchedType.setText(R.string.hours)
+            }
         }
 
         binding.button.setOnClickListener{
@@ -80,6 +96,8 @@ class UpdateFragment : Fragment() {
             val title = binding.trackableTitle.text.toString()
             val goal = Integer.parseInt(binding.trackableGoal.text.toString())
             val type: String
+            val prio = binding.priorityRB.rating
+            val progress = Integer.parseInt(binding.trackableCompleted.text.toString())
             when (binding.trackableType.checkedRadioButtonId) {
                 binding.book.id -> type = binding.book.text.toString()
                 binding.movie.id -> type = binding.movie.text.toString()
@@ -95,7 +113,7 @@ class UpdateFragment : Fragment() {
                 }
             }
             //update user
-            val updatedTrackable = Trackable(args.currentTrackable.id, title, args.currentTrackable.currentProgress, goal,type)
+            val updatedTrackable = Trackable(args.currentTrackable.id, title, progress, goal,type,prio)
             myTrackableViewModel.updateTrackable(updatedTrackable)
             Toast.makeText(requireContext(), "Successfully updated!", Toast.LENGTH_LONG).show()
             findNavController().navigate(R.id.action_updateFragment_to_listFragment)
