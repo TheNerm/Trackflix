@@ -16,3 +16,6 @@ data class Trackable(
     val type: String,
     val prio: Float
 ): Parcelable
+
+@Parcelize
+data class TrackableList(val trackables: List<Trackable>) : Parcelable

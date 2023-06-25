@@ -6,6 +6,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackflix.model.Trackable
 import com.example.trackflix.databinding.CustomRowBinding
+import com.example.trackflix.model.TrackableList
 
 class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
@@ -30,6 +31,8 @@ class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
         holder.itemBinding.tbTitle.text = currentItem.title
         holder.itemBinding.tbType.text = currentItem.type
 
+        val trackables = TrackableList(trackableList)
+
         val percentage = if (currentItem.currentProgress == 0){
             0
         }else{
@@ -38,7 +41,7 @@ class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
         holder.itemBinding.tbPercentage.text = "$percentage%"
 
         holder.itemBinding.rowElement.setOnClickListener{
-            val action = ListFragmentDirections.actionListFragmentToUpdateFragment(currentItem)
+            val action = ListFragmentDirections.actionListFragmentToUpdateFragment(trackables, position)
             Navigation.findNavController(holder.itemBinding.root).navigate(action)
         }
 
