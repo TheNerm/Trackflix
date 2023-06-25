@@ -93,6 +93,7 @@ class UpdateFragmentPager : Fragment() {
     private fun deleteTrackable() {
         var builder = AlertDialog.Builder(requireContext())
         builder.setPositiveButton("Yes"){_,_ ->
+            myTrackableViewModel.deleteTrackable(currentTrackable)
             Toast.makeText(requireContext(), "Successfully removed: ${currentTrackable.title}", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_updateFragment_to_listFragment)
         }
@@ -102,7 +103,6 @@ class UpdateFragmentPager : Fragment() {
         builder.setTitle("Delete ${currentTrackable.title}?")
         builder.setMessage("Are you sure you want to delete ${currentTrackable.title}?")
         builder.create().show()
-        myTrackableViewModel.deleteTrackable(currentTrackable)
     }
 
 //    companion object {

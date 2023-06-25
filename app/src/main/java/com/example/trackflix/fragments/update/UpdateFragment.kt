@@ -10,6 +10,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import android.widget.RatingBar
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -79,6 +80,19 @@ class UpdateFragment : Fragment() {
 
         binding.button.setOnClickListener{
             updateTrackable()
+        }
+
+        binding.trackableType.setOnCheckedChangeListener{ group, checkedId ->
+            val radiobutton = binding.trackableType.findViewById<RadioButton>(checkedId)
+            val selectedChoice = radiobutton.text.toString()
+
+            if(selectedChoice == "Book" ){
+                binding.tVWatchedType.setText(R.string.sides)
+                binding.tVGoalType.setText(R.string.sides)
+            }else{
+                binding.tVWatchedType.setText(R.string.hours)
+                binding.tVGoalType.setText(R.string.hours)
+            }
         }
 
         return view
