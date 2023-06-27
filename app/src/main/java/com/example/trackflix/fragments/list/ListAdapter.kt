@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackflix.databinding.CustomRowBinding
+import com.example.trackflix.model.TrackableList
 import com.example.trackflix.model.Trackable
 
 class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
@@ -27,6 +28,9 @@ class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = trackableList[position]
         holder.itemBinding.tbTitle.text = currentItem.title
+
+        val trackables = TrackableList(trackableList)
+
         holder.itemBinding.tbPriority.text = (currentItem.prio * 2).toInt().toString()
         val percentage = if (currentItem.currentProgress == 0){
             0
@@ -41,7 +45,7 @@ class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
         holder.itemBinding.progressBar.secondaryProgress= secondProgress.coerceAtLeast(0)
 
         holder.itemBinding.rowElement.setOnClickListener{
-            val action = ListFragmentDirections.actionListFragmentToUpdateFragment(currentItem)
+            val action = ListFragmentDirections.actionListFragmentToUpdateFragment(trackables, position)
             Navigation.findNavController(holder.itemBinding.root).navigate(action)
         }
 

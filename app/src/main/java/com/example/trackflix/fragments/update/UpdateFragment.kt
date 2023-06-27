@@ -2,6 +2,7 @@ package com.example.trackflix.fragments.update
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -9,6 +10,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import android.widget.RatingBar
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -21,8 +23,6 @@ import com.example.trackflix.viewModel.TrackableViewModel
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//private const val ARG_PARAM1 = "param1"
-//private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -30,19 +30,10 @@ import com.example.trackflix.viewModel.TrackableViewModel
  * create an instance of this fragment.
  */
 class UpdateFragment : Fragment() {
-//    // TODO: Rename and change types of parameters
-//    private var param1: String? = null
-//    private var param2: String? = null
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            param1 = it.getString(ARG_PARAM1)
-//            param2 = it.getString(ARG_PARAM2)
-//        }
-//    }
+    // TODO: Rename and change types of parameters
 
-    private val args by navArgs<UpdateFragmentArgs>()
+
+    private lateinit var currentTrackable: Trackable
     private lateinit var binding: FragmentUpdateBinding
     private lateinit var myTrackableViewModel: TrackableViewModel
 
@@ -54,13 +45,20 @@ class UpdateFragment : Fragment() {
         binding = FragmentUpdateBinding.inflate(layoutInflater, container, false)
         val view = binding.root
 
+        currentTrackable = arguments?.getParcelable<Trackable>("trackable")!!
+        Log.d("UpdateFragment", currentTrackable.toString())
+
+        if (currentTrackable==null){
+            return view
+        }
+
         myTrackableViewModel = ViewModelProvider(this).get(TrackableViewModel::class.java)
 
-        binding.trackableTitle.setText(args.currentTrackable.title)
-        binding.trackableGoal.setText(args.currentTrackable.goal.toString())
-        binding.trackableCompleted.setText(args.currentTrackable.currentProgress.toString())
-        binding.priorityRB.rating = args.currentTrackable.prio
-        when(args.currentTrackable.type){
+        binding.trackableTitle.setText(currentTrackable.title)
+        binding.trackableGoal.setText(currentTrackable.goal.toString())
+        binding.trackableCompleted.setText(currentTrackable.currentProgress.toString())
+        binding.priorityRB.rating = currentTrackable.prio
+        when(currentTrackable.type){
             "Book" -> {
                 binding.trackableType.check(binding.book.id)
                 binding.tVGoalType.setText(R.string.sides)
@@ -84,8 +82,18 @@ class UpdateFragment : Fragment() {
             updateTrackable()
         }
 
-        //addDeleteOptionsMenu
-        setHasOptionsMenu(true)
+        binding.trackableType.setOnCheckedChangeListener{ group, checkedId ->
+            val radiobutton = binding.trackableType.findViewById<RadioButton>(checkedId)
+            val selectedChoice = radiobutton.text.toString()
+
+            if(selectedChoice == "Book" ){
+                binding.tVWatchedType.setText(R.string.sides)
+                binding.tVGoalType.setText(R.string.sides)
+            }else{
+                binding.tVWatchedType.setText(R.string.hours)
+                binding.tVGoalType.setText(R.string.hours)
+            }
+        }
 
         return view
     }
@@ -113,8 +121,11 @@ class UpdateFragment : Fragment() {
                 }
             }
             //update user
-            val updatedTrackable = Trackable(args.currentTrackable.id, title, progress, goal,type,prio)
-            myTrackableViewModel.updateTrackable(updatedTrackable)
+            val updatedTrackable =
+                currentTrackable.let { Trackable(it.id, title, progress, goal,type,prio) }
+            if (updatedTrackable != null) {
+                myTrackableViewModel.updateTrackable(updatedTrackable)
+            }
             Toast.makeText(requireContext(), "Successfully updated!", Toast.LENGTH_LONG).show()
             findNavController().navigate(R.id.action_updateFragment_to_listFragment)
         }else{
@@ -152,51 +163,26 @@ class UpdateFragment : Fragment() {
         return true
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.delete_menu, menu)
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.menu_delete){
-            deleteTrackable()
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment UpdateFragment.
+         */
+        // TODO: Rename and change types and number of parameters
+        @JvmStatic
+        fun newInstance(trackable: Trackable): UpdateFragment{
+            val fragment = UpdateFragment()
+            val args = Bundle().apply {
+                putParcelable("trackable", trackable)
+            }
+            fragment.arguments = args
+            return fragment
         }
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun deleteTrackable() {
-        var builder = AlertDialog.Builder(requireContext())
-        builder.setPositiveButton("Yes"){_,_ ->
-            myTrackableViewModel.deleteTrackable(args.currentTrackable)
-            Toast.makeText(requireContext(), "Successfully removed: ${args.currentTrackable.title}", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
-        }
-        builder.setNegativeButton("No"){_,_ ->
-
-        }
-        builder.setTitle("Delete ${args.currentTrackable.title}?")
-        builder.setMessage("Are you sure you want to delete ${args.currentTrackable.title}?")
-        builder.create().show()
 
     }
-
-
-//    companion object {
-//        /**
-//         * Use this factory method to create a new instance of
-//         * this fragment using the provided parameters.
-//         *
-//         * @param param1 Parameter 1.
-//         * @param param2 Parameter 2.
-//         * @return A new instance of fragment UpdateFragment.
-//         */
-//        // TODO: Rename and change types and number of parameters
-//        @JvmStatic
-//        fun newInstance(param1: String, param2: String) =
-//            UpdateFragment().apply {
-//                arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-//                    putString(ARG_PARAM2, param2)
-//                }
-//            }
-//    }
 }

@@ -28,14 +28,17 @@
     </fragment>
     <fragment
         android:id="@+id/updateFragment"
-        android:name="com.example.trackflix.fragments.update.UpdateFragment"
+        android:name="com.example.trackflix.fragments.update.UpdateFragmentPager"
         android:label="Update Trackable"
         tools:layout="@layout/fragment_update" >
         <action
             android:id="@+id/action_updateFragment_to_listFragment"
             app:destination="@id/listFragment" />
         <argument
-            android:name="currentTrackable"
-            app:argType="com.example.trackflix.model.Trackable" />
+            android:name="currentTrackableList"
+            app:argType="com.example.trackflix.model.TrackableList" />
+        <argument
+            android:name="currentListPosition"
+            app:argType="integer"/>
     </fragment>
 </navigation>
