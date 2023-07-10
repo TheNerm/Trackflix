@@ -2,11 +2,13 @@ package com.example.trackflix.fragments.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getColor
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trackflix.databinding.CustomRowBinding
-import com.example.trackflix.model.TrackableList
 import com.example.trackflix.model.Trackable
+import com.example.trackflix.model.TrackableList
+
 
 class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
@@ -44,11 +46,19 @@ class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
         val secondProgress = percentage -100
         holder.itemBinding.progressBar.secondaryProgress= secondProgress.coerceAtLeast(0)
 
+        val cardBgColorResource = when(currentItem.progressState){
+            "backlog"-> com.example.trackflix.R.color.card_default
+            "inProgress"-> com.example.trackflix.R.color.card_default
+            "finished"-> com.example.trackflix.R.color.card_finished
+            "cancelled"-> com.example.trackflix.R.color.card_cancelled
+            else -> {com.example.trackflix.R.color.card_default}
+        }
+        holder.itemBinding.cardView.setCardBackgroundColor( getColor(holder.itemBinding.cardView.context, cardBgColorResource))
+
         holder.itemBinding.rowElement.setOnClickListener{
             val action = ListFragmentDirections.actionListFragmentToUpdateFragment(trackables, position)
             Navigation.findNavController(holder.itemBinding.root).navigate(action)
         }
-
     }
 
     fun setData(trackable: List<Trackable>){
