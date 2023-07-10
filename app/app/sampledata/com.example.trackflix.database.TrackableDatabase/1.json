@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5190116ee1c3a8b07dd1089290232c03",
+    "identityHash": "3464ec75fa754c502b65b5a29a6ca41b",
     "entities": [
       {
         "tableName": "trackable_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `currentProgress` INTEGER NOT NULL, `goal` INTEGER NOT NULL, `type` TEXT NOT NULL, `prio` REAL NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `currentProgress` INTEGER NOT NULL, `goal` INTEGER NOT NULL, `type` TEXT NOT NULL, `prio` REAL NOT NULL, `progressState` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -43,6 +43,12 @@
             "columnName": "prio",
             "affinity": "REAL",
             "notNull": true
+          },
+          {
+            "fieldPath": "progressState",
+            "columnName": "progressState",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -58,7 +64,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5190116ee1c3a8b07dd1089290232c03')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3464ec75fa754c502b65b5a29a6ca41b')"
     ]
   }
 }

@@ -14,4 +14,8 @@
     <string name="update">Update</string>
     <string name="hours">Hours</string>
     <string name="sides">Pages</string>
+    <string name="backlog">Backlog</string>
+    <string name="inProgress">In Progress</string>
+    <string name="finished">Finished</string>
+    <string name="cancelled">Cancelled</string>
 </resources>
