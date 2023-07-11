@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.trackflix.model.Trackable
 
-@Database(entities = [Trackable::class], version = 1)
+@Database(entities = [Trackable::class], version = 2)
 abstract class TrackableDatabase: RoomDatabase() {
     abstract fun trackableDao(): TrackableDao
 
@@ -24,7 +24,7 @@ abstract class TrackableDatabase: RoomDatabase() {
                     context.applicationContext,
                     TrackableDatabase::class.java,
                     "trackable_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 return instance
             }
