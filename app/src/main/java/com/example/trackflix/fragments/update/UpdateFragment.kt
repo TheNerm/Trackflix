@@ -1,22 +1,17 @@
 package com.example.trackflix.fragments.update
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
-import android.widget.RatingBar
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.trackflix.R
+import com.example.trackflix.database.TrackableProgressionState
 import com.example.trackflix.databinding.FragmentUpdateBinding
 import com.example.trackflix.model.Trackable
 import com.example.trackflix.viewModel.TrackableViewModel
@@ -77,6 +72,17 @@ class UpdateFragment : Fragment() {
                 binding.tVWatchedType.setText(R.string.hours)
             }
         }
+        when(currentTrackable.progressState){
+            "backlog" -> {
+                binding.trackableProgressionState.check(binding.backlog.id) }
+            "inProgress" -> {
+                binding.trackableProgressionState.check(binding.inProgress.id) }
+            "finished" -> {
+                binding.trackableProgressionState.check(binding.finished.id) }
+            "cancelled" -> {
+                binding.trackableProgressionState.check(binding.cancelled.id)
+            }
+        }
 
         binding.button.setOnClickListener{
             updateTrackable()
@@ -120,12 +126,24 @@ class UpdateFragment : Fragment() {
                     return
                 }
             }
-            //update user
-            val updatedTrackable =
-                currentTrackable.let { Trackable(it.id, title, progress, goal,type,prio) }
-            if (updatedTrackable != null) {
-                myTrackableViewModel.updateTrackable(updatedTrackable)
+            val progressionState = when(binding.trackableProgressionState.checkedRadioButtonId){
+                binding.backlog.id -> TrackableProgressionState.BACKLOG.value
+                binding.inProgress.id -> TrackableProgressionState.IN_PROGRESS.value
+                binding.finished.id -> TrackableProgressionState.FINISHED.value
+                binding.cancelled.id -> TrackableProgressionState.CANCELLED.value
+                else -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "Please fill out all fields!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return
+                }
             }
+            //update trackable
+            val updatedTrackable =
+                currentTrackable.let { Trackable(it.id, title, progress, goal,type,prio, progressionState) }
+            myTrackableViewModel.updateTrackable(updatedTrackable)
             Toast.makeText(requireContext(), "Successfully updated!", Toast.LENGTH_LONG).show()
             findNavController().navigate(R.id.action_updateFragment_to_listFragment)
         }else{
@@ -147,8 +165,22 @@ class UpdateFragment : Fragment() {
                 return false
             }
         }
+        val progressState = when(binding.trackableProgressionState.checkedRadioButtonId){
+            binding.backlog.id -> TrackableProgressionState.BACKLOG.value
+            binding.inProgress.id -> TrackableProgressionState.IN_PROGRESS.value
+            binding.finished.id -> TrackableProgressionState.FINISHED.value
+            binding.cancelled.id -> TrackableProgressionState.CANCELLED.value
+            else -> {
+                Toast.makeText(
+                    requireContext(),
+                    "Please fill out all fields!",
+                    Toast.LENGTH_LONG
+                ).show()
+                return false
+            }
+        }
 
-        if(checkTitle.isEmpty() || checkGoal.isEmpty() || checkType.isEmpty()){
+        if(checkTitle.isEmpty() || checkGoal.isEmpty() || checkType.isEmpty() || progressState.isEmpty()){
             return false
         }
 

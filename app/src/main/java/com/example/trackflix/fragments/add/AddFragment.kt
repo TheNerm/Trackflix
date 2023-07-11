@@ -5,17 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.trackflix.R
+import com.example.trackflix.database.TrackableProgressionState
+import com.example.trackflix.databinding.FragmentAddBinding
 import com.example.trackflix.model.Trackable
 import com.example.trackflix.viewModel.TrackableViewModel
-import com.example.trackflix.databinding.FragmentAddBinding
-import java.lang.Exception
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -87,6 +85,7 @@ class AddFragment : Fragment() {
             val progresstxt = binding.trackableCompleted.text.toString().trim()
             var progress = 0
             val prio = binding.priorityRB.rating
+            var progressState = TrackableProgressionState.BACKLOG.value
 
             if(progresstxt.isNotEmpty()){
                 progress = Integer.parseInt(progresstxt)
@@ -103,8 +102,13 @@ class AddFragment : Fragment() {
                 }
             }
 
+            if(progress in 1 until goal){
+                progressState = TrackableProgressionState.IN_PROGRESS.value
+            }else if(progress >= goal){
+                progressState = TrackableProgressionState.FINISHED.value
+            }
             //id is primary key and will be auto-generated, so we just need to specify to start at 0
-            val trackable = Trackable(0, title, progress, goal, type,prio)
+            val trackable = Trackable(0, title, progress, goal, type,prio, progressState)
             //add data to database
             myTrackableViewModel.addTrackable(trackable)
             Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()

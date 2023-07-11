@@ -14,7 +14,8 @@ data class Trackable(
     val currentProgress: Int,
     val goal: Int,
     val type: String,
-    val prio: Float
+    val prio: Float,
+    val progressState: String
 ): Parcelable
 
 @Parcelize
