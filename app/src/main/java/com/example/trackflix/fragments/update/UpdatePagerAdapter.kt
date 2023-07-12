@@ -10,6 +10,10 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.trackflix.model.Trackable
 
+/**
+ * The Fragment Pager Adapter. Responsible for creating new Update Fragments according to the List
+ * and for the swipe functionality
+ */
 class UpdatePagerAdapter(fragmentActivity: FragmentActivity, private val trackableList: List<Trackable>) :
     FragmentStateAdapter(fragmentActivity) {
 
