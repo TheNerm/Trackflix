@@ -18,4 +18,6 @@
     <string name="inProgress">In Progress</string>
     <string name="finished">Finished</string>
     <string name="cancelled">Cancelled</string>
+    <string name="back">Back</string>
+    <string name="reroll">Reroll</string>
 </resources>
