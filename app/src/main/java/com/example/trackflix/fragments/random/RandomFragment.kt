@@ -1,19 +1,14 @@
 package com.example.trackflix.fragments.random
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavArgs
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.trackflix.R
 import com.example.trackflix.databinding.FragmentRandomBinding
-import com.example.trackflix.fragments.list.ListAdapter
-import com.example.trackflix.model.Trackable
 import com.example.trackflix.viewModel.TrackableViewModel
 
 // TODO: Rename parameter arguments, choose names that match
@@ -53,6 +48,11 @@ class RandomFragment : Fragment() {
 
         return view
     }
+    /**
+     * This method fills the Textfields with the data of a random trackable object from the list
+     * Before the object is randomly chosen the list is filtered for all the objects that are in progress
+     * to avoid suggesting media that has already been consumed or has not yet been released
+     */
 
     fun init(){
         val filteredTrackables = args.trackableList.trackables.filter{trackable ->
