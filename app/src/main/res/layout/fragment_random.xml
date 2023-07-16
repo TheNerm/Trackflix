@@ -169,13 +169,6 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <Button
-                android:id="@+id/back_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/back" />
-
-            <Button
                 android:id="@+id/reroll_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

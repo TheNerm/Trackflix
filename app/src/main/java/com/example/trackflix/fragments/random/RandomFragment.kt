@@ -38,10 +38,6 @@ class RandomFragment : Fragment() {
 
         init()
 
-        binding.backBtn.setOnClickListener{
-            findNavController().navigate((R.id.action_randomFragment_to_listFragment))
-        }
-
         binding.rerollBtn.setOnClickListener{
             init()
         }
@@ -57,6 +53,9 @@ class RandomFragment : Fragment() {
     fun init(){
         val filteredTrackables = args.trackableList.trackables.filter{trackable ->
             trackable.progressState == "inProgress"
+        }
+        if(filteredTrackables.isEmpty()){
+            return
         }
         val randTrackable = filteredTrackables.random()
 
