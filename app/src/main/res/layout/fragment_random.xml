@@ -41,8 +41,11 @@
             android:id="@+id/title_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="36dp"
+            android:layout_marginEnd="24dp"
             android:text="TextView"
+            android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -67,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="72dp"
-            android:text="U have already consumed:"
+            android:text="@string/RandFragUserinteraction1"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="out of"
+            android:text="@string/randFragUserinteraction2"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -126,7 +129,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="So there is still "
+                android:text="@string/randFragUserinteraction3"
                 android:textSize="16sp" />
 
             <TextView
@@ -156,7 +159,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=" left for u to enjoy!"
+                android:text="@string/randFragUserInteraction4"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -175,6 +178,47 @@
                 android:layout_weight="1"
                 android:text="@string/reroll" />
         </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/trackableType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+            <RadioButton
+                android:id="@+id/none_RB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/none" />
+
+            <RadioButton
+                android:id="@+id/book_RB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/book" />
+
+            <RadioButton
+                android:id="@+id/movie_RB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/movie" />
+
+            <RadioButton
+                android:id="@+id/series_RB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/series" />
+
+            <RadioButton
+                android:id="@+id/game_RB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/game" />
+        </RadioGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
