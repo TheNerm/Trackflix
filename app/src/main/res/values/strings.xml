@@ -20,7 +20,7 @@
     <string name="cancelled">Cancelled</string>
     <string name="back">Back</string>
     <string name="reroll">Reroll</string>
-    <string name="randFragError">"The provided List contains no Elements that haven\'t been watched yet.\n Please check if u have trackables that have the status in Progress!"</string>
+    <string name="randFragError">"The provided List contains no Elements that haven\'t been watched yet.\n Please check if u have trackables that have the status in Progress or in Backlog!"</string>
     <string name="none">none</string>
     <string name="RandFragUserinteraction1">U have already consumed:</string>
     <string name="randFragUserinteraction2">out of</string>

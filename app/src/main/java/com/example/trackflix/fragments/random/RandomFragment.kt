@@ -77,11 +77,11 @@ class RandomFragment : Fragment() {
 
         if(type != "none") {
             filteredTrackables = args.trackableList.trackables.filter { trackable ->
-                ((trackable.type == type)&&(trackable.progressState == "inProgress"))
+                ((trackable.type == type)&&((trackable.progressState == "inProgress")||(trackable.progressState == "backlog")))
             }
         }else{
             filteredTrackables = args.trackableList.trackables.filter { trackable ->
-                trackable.progressState == "inProgress"
+                (trackable.progressState == "inProgress")||(trackable.progressState == "backlog")
             }
         }
 
