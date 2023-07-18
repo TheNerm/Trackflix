@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import android.widget.Switch
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +16,8 @@ import com.example.trackflix.database.TrackableProgressionState
 import com.example.trackflix.databinding.FragmentUpdateBinding
 import com.example.trackflix.model.Trackable
 import com.example.trackflix.viewModel.TrackableViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -91,6 +94,12 @@ class UpdateFragment : Fragment() {
             }
         }
 
+        if(currentTrackable.releaseDate.isNotEmpty()){
+            binding.releasedSW.isChecked = true
+            binding.releaseDateET.visibility = View.VISIBLE
+            binding.releaseDateET.setText(currentTrackable.releaseDate)
+        }
+
         //Listener for the button to save entered data from the user
         binding.button.setOnClickListener{
             updateTrackable()
@@ -107,6 +116,16 @@ class UpdateFragment : Fragment() {
             }else{
                 binding.tVWatchedType.setText(R.string.hours)
                 binding.tVGoalType.setText(R.string.hours)
+            }
+        }
+
+        binding.releasedSW.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                binding.releaseDateET.visibility = View.VISIBLE
+            } else {
+                binding.releaseDateET.visibility = View.GONE
+                //Visibility gone will not only make the textfield invisible to the user but also
+                //It will only return a null value should it be accessed by code while it is GONE
             }
         }
 
@@ -153,9 +172,11 @@ class UpdateFragment : Fragment() {
                     return
                 }
             }
+
+            val reldate: String = binding.releaseDateET.text.toString()
             //update trackable
             val updatedTrackable =
-                currentTrackable.let { Trackable(it.id, title, progress, goal,type,prio, progressionState) }
+                currentTrackable.let { Trackable(it.id, title, progress, goal,type,prio, progressionState,reldate) }
             myTrackableViewModel.updateTrackable(updatedTrackable)
             Toast.makeText(requireContext(), "Successfully updated!", Toast.LENGTH_LONG).show()
             findNavController().navigate(R.id.action_updateFragment_to_listFragment)
