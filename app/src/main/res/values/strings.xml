@@ -12,10 +12,18 @@
     <string name="game">Game</string>
     <string name="add">Add</string>
     <string name="update">Update</string>
-    <string name="hours">Hours</string>
+    <string name="hours"> Hours</string>
     <string name="sides">Pages</string>
     <string name="backlog">Backlog</string>
     <string name="inProgress">In Progress</string>
     <string name="finished">Finished</string>
     <string name="cancelled">Cancelled</string>
+    <string name="back">Back</string>
+    <string name="reroll">Reroll</string>
+    <string name="randFragError">"The provided List contains no Elements that haven\'t been watched yet.\n Please check if u have trackables that have the status in Progress or in Backlog!"</string>
+    <string name="none">none</string>
+    <string name="RandFragUserinteraction1">U have already consumed:</string>
+    <string name="randFragUserinteraction2">out of</string>
+    <string name="randFragUserinteraction3">"So there is still "</string>
+    <string name="randFragUserInteraction4">" left for u to enjoy!"</string>
 </resources>

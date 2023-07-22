@@ -31,6 +31,11 @@ import kotlin.properties.Delegates
  * Use the [UpdateFragmentPager.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+/**
+ * This Fragment provides the Pager for the UpdateFragments. The class is responsible for swiping through
+ * the single trackables with their detail optic
+ */
 class UpdateFragmentPager : Fragment() {
     // TODO: Rename and change types of parameters
     private val args by navArgs<UpdateFragmentPagerArgs>()
@@ -48,12 +53,14 @@ class UpdateFragmentPager : Fragment() {
         // Inflate the layout for this fragment
         myTrackableViewModel = ViewModelProvider(this).get(TrackableViewModel::class.java)
 
+        //extracting list and current position of the clicked trackable as a startpoint
         trackables = args.currentTrackableList.trackables
         currentPos = args.currentListPosition
         currentTrackable = trackables[currentPos]
 
         Log.d("UpdateScreen", trackables.toString())
 
+        //Inflating the pager and setting the adapter
         binding = FragmentUpdatePagerBinding.inflate(inflater, container, false)
         val rootView = binding.root
         viewPager = binding.viewPager
@@ -62,6 +69,7 @@ class UpdateFragmentPager : Fragment() {
 
         viewPager.setCurrentItem(currentPos)
 
+        //changing the current trackable dynamically on user swiping
         viewPager.registerOnPageChangeCallback(object:ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
@@ -90,6 +98,9 @@ class UpdateFragmentPager : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * This function is responsible for deleting the right item in the List when the delete button is pressed
+     */
     private fun deleteTrackable() {
         var builder = AlertDialog.Builder(requireContext())
         builder.setPositiveButton("Yes"){_,_ ->

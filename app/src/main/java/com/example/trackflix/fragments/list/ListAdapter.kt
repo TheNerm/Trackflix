@@ -59,6 +59,7 @@ class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
             val action = ListFragmentDirections.actionListFragmentToUpdateFragment(trackables, position)
             Navigation.findNavController(holder.itemBinding.root).navigate(action)
         }
+
     }
 
     fun setData(trackable: List<Trackable>){

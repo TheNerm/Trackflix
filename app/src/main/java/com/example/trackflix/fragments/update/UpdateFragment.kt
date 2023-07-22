@@ -24,6 +24,11 @@ import com.example.trackflix.viewModel.TrackableViewModel
  * Use the [UpdateFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+/**
+ * The Update Fragment holds the information about the Trackable entries in the list and provides
+ * an interface for the user to track and update the data
+ */
 class UpdateFragment : Fragment() {
     // TODO: Rename and change types of parameters
 
@@ -40,6 +45,7 @@ class UpdateFragment : Fragment() {
         binding = FragmentUpdateBinding.inflate(layoutInflater, container, false)
         val view = binding.root
 
+        //extraction of the parameter "trackable" from the companion object
         currentTrackable = arguments?.getParcelable<Trackable>("trackable")!!
         Log.d("UpdateFragment", currentTrackable.toString())
 
@@ -49,6 +55,7 @@ class UpdateFragment : Fragment() {
 
         myTrackableViewModel = ViewModelProvider(this).get(TrackableViewModel::class.java)
 
+        //Inititialising the current fragment with the data from the current trackable
         binding.trackableTitle.setText(currentTrackable.title)
         binding.trackableGoal.setText(currentTrackable.goal.toString())
         binding.trackableCompleted.setText(currentTrackable.currentProgress.toString())
@@ -84,10 +91,12 @@ class UpdateFragment : Fragment() {
             }
         }
 
+        //Listener for the button to save entered data from the user
         binding.button.setOnClickListener{
             updateTrackable()
         }
 
+        //provides a contunes change of the type when the category of the medium is changed
         binding.trackableType.setOnCheckedChangeListener{ group, checkedId ->
             val radiobutton = binding.trackableType.findViewById<RadioButton>(checkedId)
             val selectedChoice = radiobutton.text.toString()
@@ -104,6 +113,10 @@ class UpdateFragment : Fragment() {
         return view
     }
 
+    /**
+     * This Fuunction reads all the Data from the fields in the fragment and overrides the
+     * data int the Database with the read data
+     */
     private fun updateTrackable() {
         if(inputCheck()) {
             //replace this with actual data read from our view
@@ -151,6 +164,9 @@ class UpdateFragment : Fragment() {
         }
     }
 
+    /**
+     * Function to check fields that have to be filled
+     */
     private fun inputCheck(): Boolean {
         val checkTitle = binding.trackableTitle.text.toString()
         val checkGoal = binding.trackableGoal.text.toString()
@@ -195,7 +211,11 @@ class UpdateFragment : Fragment() {
         return true
     }
 
-
+    /**
+     * Companion object for the fragment. Whenever the newInstance Function is called a new instance of
+     * this fragment is created with a trackable as parameter. In the oncreate the trackable is extracted and
+     * the fragment is filled with this trackables data
+     */
     companion object {
         /**
          * Use this factory method to create a new instance of

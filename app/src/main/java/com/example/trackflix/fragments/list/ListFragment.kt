@@ -13,11 +13,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trackflix.R
 import com.example.trackflix.viewModel.TrackableViewModel
 import com.example.trackflix.databinding.FragmentListBinding
+import com.example.trackflix.model.Trackable
+import com.example.trackflix.model.TrackableList
 
 //// TODO: Rename parameter arguments, choose names that match
 //// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -68,7 +71,18 @@ class ListFragment : Fragment() {
         })
 
         binding.floatingActionButton.setOnClickListener{
-            findNavController().navigate(R.id.action_listFragment_to_addFragment)
+            findNavController().navigate((R.id.action_listFragment_to_addFragment))
+        }
+
+        binding.randomFAB.setOnClickListener{
+            //creating a list of current entries and passing them to the randdm fragment
+            val trackables = mutableListOf<Trackable>()
+            myTrackableViewModel.readAllData.observe(viewLifecycleOwner){ trackableList->
+                trackables.addAll(trackableList)
+            }
+            val trackList = TrackableList(trackables)
+            val action = ListFragmentDirections.actionListFragmentToRandomFragment(trackList)
+            Navigation.findNavController(view).navigate(action)
         }
 
         //add menu
