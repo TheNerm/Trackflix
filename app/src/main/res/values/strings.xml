@@ -27,5 +27,5 @@
     <string name="randFragUserinteraction3">"So there is still "</string>
     <string name="randFragUserInteraction4">" left for u to enjoy!"</string>
     <string name="notReleased">not yet released</string>
-    <string name="releaseDate">Release Date TT.MM.JJJJ</string>
+    <string name="releaseDate">Release Date</string>
 </resources>

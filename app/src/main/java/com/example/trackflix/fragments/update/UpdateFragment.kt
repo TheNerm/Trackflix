@@ -1,23 +1,44 @@
 package com.example.trackflix.fragments.update
 
+import android.Manifest
+import android.app.AlarmManager
+import android.app.DatePickerDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import android.widget.RadioButton
 import android.widget.Switch
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.trackflix.MainActivity
 import com.example.trackflix.R
 import com.example.trackflix.database.TrackableProgressionState
 import com.example.trackflix.databinding.FragmentUpdateBinding
 import com.example.trackflix.model.Trackable
+import com.example.trackflix.notification.NotificationReceiver
 import com.example.trackflix.viewModel.TrackableViewModel
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -32,7 +53,7 @@ import java.time.format.DateTimeFormatter
  * The Update Fragment holds the information about the Trackable entries in the list and provides
  * an interface for the user to track and update the data
  */
-class UpdateFragment : Fragment() {
+class UpdateFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     // TODO: Rename and change types of parameters
 
 
@@ -105,6 +126,11 @@ class UpdateFragment : Fragment() {
             updateTrackable()
         }
 
+        //Listener to open date picker
+        binding.releaseDateET.setOnClickListener{
+            showDatePickerDialog()
+        }
+
         //provides a contunes change of the type when the category of the medium is changed
         binding.trackableType.setOnCheckedChangeListener{ group, checkedId ->
             val radiobutton = binding.trackableType.findViewById<RadioButton>(checkedId)
@@ -173,7 +199,20 @@ class UpdateFragment : Fragment() {
                 }
             }
 
-            val reldate: String = binding.releaseDateET.text.toString()
+            var reldate: String = binding.releaseDateET.text.toString()
+
+            if(reldate != "00.00.0000"){
+                val dateFormat = "dd-MM-yyyy"
+                val calendar = stringToCalendar(reldate, dateFormat)
+                if(calendar!=null){
+                    sendNotification(requireContext(),"Release Notification",
+                        "$title should be available now",calendar)
+                }
+            }else{
+                Toast.makeText(requireContext(), "Couldnt save date. Probably wrong format!", Toast.LENGTH_LONG).show()
+                reldate = "00.00.0000"
+            }
+
             //update trackable
             val updatedTrackable =
                 currentTrackable.let { Trackable(it.id, title, progress, goal,type,prio, progressionState,reldate) }
@@ -230,6 +269,71 @@ class UpdateFragment : Fragment() {
         }
 
         return true
+    }
+    //Functions to set the notifications for the release date should one be entered
+    private fun createNotificationChannel(context: Context) {
+        val channelId = "NotifyOnRelease"
+        val channelName = "Release Notification"
+        val channelDescription = "Channel for messages to the user about releases of trackables"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+
+        val channel = NotificationChannel(channelId, channelName, importance)
+        channel.description = channelDescription
+
+        val notificationManager = activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+    fun sendNotification(context: Context, title: String, message: String, date: Calendar) {
+        createNotificationChannel(context)
+
+        val intent = Intent(context, NotificationReceiver::class.java)
+        intent.putExtra("notification_title", title)
+        intent.putExtra("notification_message", message)
+        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            date.timeInMillis,
+            pendingIntent
+        )
+    }
+
+    //Functions to realise a Date picker dialog
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(requireContext(), this, year, month, day)
+        datePickerDialog.show()
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        val selectedCalendar = Calendar.getInstance()
+        selectedCalendar.set(year, month, dayOfMonth)
+
+        // Format the selected date and display it in the TextView or EditText
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val formattedDate = dateFormat.format(selectedCalendar.time)
+        binding.releaseDateET.setText(formattedDate)
+    }
+
+    fun stringToCalendar(dateString: String, dateFormat: String): Calendar? {
+        val calendar = Calendar.getInstance()
+        try {
+            val sdf = SimpleDateFormat(dateFormat)
+            val date = sdf.parse(dateString)
+            if (date != null) {
+                calendar.time = date
+                return calendar
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
     }
 
     /**
