@@ -207,10 +207,11 @@ class UpdateFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 if(calendar!=null){
                     sendNotification(requireContext(),"Release Notification",
                         "$title should be available now",calendar)
+                    if(calendar.timeInMillis <= Calendar.getInstance().timeInMillis){
+                        Toast.makeText(requireContext(), "Failed saving date! Target in the past.", Toast.LENGTH_LONG).show()
+                        reldate = ""
+                    }
                 }
-            }else{
-                Toast.makeText(requireContext(), "Couldnt save date. Probably wrong format!", Toast.LENGTH_LONG).show()
-                reldate = "00.00.0000"
             }
 
             //update trackable
@@ -280,13 +281,36 @@ class UpdateFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         val channel = NotificationChannel(channelId, channelName, importance)
         channel.description = channelDescription
 
-        val notificationManager = activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
     fun sendNotification(context: Context, title: String, message: String, date: Calendar) {
         createNotificationChannel(context)
 
-        val intent = Intent(context, NotificationReceiver::class.java)
+        val dateFormat = "dd-MM-yyyy"
+        val oldcal = stringToCalendar(currentTrackable.releaseDate, dateFormat)
+        if(oldcal != null&&date.timeInMillis <= oldcal.timeInMillis){
+            return
+        }
+        Log.d("Notify", currentTrackable.id.toString())
+        val notificationIntent = Intent(context, NotificationReceiver::class.java)
+        notificationIntent.putExtra("notification_id", currentTrackable.id)
+        notificationIntent.putExtra("notification_title", title)
+        notificationIntent.putExtra("notification_message", message)
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            currentTrackable.id,
+            notificationIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP, date.timeInMillis, pendingIntent
+        )
+
+
+        /*val intent = Intent(context, NotificationReceiver::class.java)
         intent.putExtra("notification_title", title)
         intent.putExtra("notification_message", message)
         val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
@@ -297,7 +321,7 @@ class UpdateFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             AlarmManager.RTC_WAKEUP,
             date.timeInMillis,
             pendingIntent
-        )
+        )*/
     }
 
     //Functions to realise a Date picker dialog

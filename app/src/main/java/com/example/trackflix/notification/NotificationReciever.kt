@@ -18,23 +18,24 @@ import com.example.trackflix.R
 class NotificationReceiver : BroadcastReceiver() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onReceive(context: Context, intent: Intent) {
+        val id = intent.getIntExtra("notification_id",0)
         val title = intent.getStringExtra("notification_title") ?: ""
         val message = intent.getStringExtra("notification_message") ?: ""
-        showNotification(context, title, message)
+        showNotification(context, id, title, message)
 
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-private fun showNotification(context: Context, title: String, message: String) {
+private fun showNotification(context: Context, id:Int, title: String, message: String) {
     val channelId = "NotifyOnRelease"
     val builder = NotificationCompat.Builder(context, channelId)
+        .setSmallIcon(R.drawable.icon)
         .setContentTitle(title)
         .setContentText(message)
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .setAutoCancel(true)
 
-    val notificationManager = NotificationManagerCompat.from(context)
     with(NotificationManagerCompat.from(context)) {
         if (ContextCompat.checkSelfPermission(
                 context,
@@ -48,6 +49,6 @@ private fun showNotification(context: Context, title: String, message: String) {
                 PERMISSION_REQUEST_CODE
             )
         }
-        notify(/* notificationId */ 1, builder.build())
+        notify(/* notificationId */ id, builder.build())
     }
 }
