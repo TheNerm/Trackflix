@@ -199,6 +199,8 @@ class UpdateFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 }
             }
 
+            //sending notification if a new releasedate is entered. The entered date has to be in the future or it wouldnt make
+            //sense setting a release date
             var reldate: String = binding.releaseDateET.text.toString()
 
             if(reldate != "00.00.0000"){
@@ -284,15 +286,17 @@ class UpdateFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
+    // the sending of the notification to the user
     fun sendNotification(context: Context, title: String, message: String, date: Calendar) {
         createNotificationChannel(context)
 
+        //need to check if the new entered date is really a new later one. If so then the notification with the old id is overwritten
         val dateFormat = "dd-MM-yyyy"
         val oldcal = stringToCalendar(currentTrackable.releaseDate, dateFormat)
         if(oldcal != null&&date.timeInMillis <= oldcal.timeInMillis){
             return
         }
-        Log.d("Notify", currentTrackable.id.toString())
+
         val notificationIntent = Intent(context, NotificationReceiver::class.java)
         notificationIntent.putExtra("notification_id", currentTrackable.id)
         notificationIntent.putExtra("notification_title", title)
@@ -304,6 +308,7 @@ class UpdateFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        //The alarm manager is responsible for sheduling the notification at a certain time
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP, date.timeInMillis, pendingIntent

@@ -16,6 +16,8 @@ import com.example.trackflix.MainActivity
 import com.example.trackflix.R
 
 class NotificationReceiver : BroadcastReceiver() {
+
+    //The notification Reciever recieves the notification and then uses the showNotification() method to create one on the phone
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onReceive(context: Context, intent: Intent) {
         val id = intent.getIntExtra("notification_id",0)
@@ -26,6 +28,7 @@ class NotificationReceiver : BroadcastReceiver() {
     }
 }
 
+//shows the notification to the user. The contents of the message are set here
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 private fun showNotification(context: Context, id:Int, title: String, message: String) {
     val channelId = "NotifyOnRelease"
