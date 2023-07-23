@@ -3,7 +3,6 @@ package com.example.trackflix.fragments.list
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -11,16 +10,19 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trackflix.R
-import com.example.trackflix.viewModel.TrackableViewModel
+import com.example.trackflix.database.TrackableProgressionState
 import com.example.trackflix.databinding.FragmentListBinding
 import com.example.trackflix.model.Trackable
 import com.example.trackflix.model.TrackableList
+import com.example.trackflix.viewModel.TrackableViewModel
+import com.google.android.material.tabs.TabLayout
 
 //// TODO: Rename parameter arguments, choose names that match
 //// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -47,6 +49,8 @@ class ListFragment : Fragment() {
 
     private lateinit var binding: FragmentListBinding
     private lateinit var myTrackableViewModel: TrackableViewModel
+    private lateinit var tabLayout: TabLayout
+    private val tabStartingIndex = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,7 +63,6 @@ class ListFragment : Fragment() {
         binding = FragmentListBinding.inflate(layoutInflater, container, false)
         val view = binding.root
 
-
         val adapter = ListAdapter()
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
@@ -67,8 +70,37 @@ class ListFragment : Fragment() {
 
         myTrackableViewModel = ViewModelProvider(this).get(TrackableViewModel::class.java)
         myTrackableViewModel.readAllData.observe(viewLifecycleOwner, Observer {trackable ->
-            adapter.setData(trackable)
+            //adapter.setData(trackable)
         })
+
+
+
+        tabLayout = binding.tabLayout
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                 val filteredTrackables = myTrackableViewModel.readAllData.value?.filter {
+                     when (tab?.position) {
+                         0 -> it.progressState == TrackableProgressionState.BACKLOG.value
+                         1 -> it.progressState == TrackableProgressionState.IN_PROGRESS.value
+                         2 -> it.progressState == TrackableProgressionState.FINISHED.value
+                         3 -> it.progressState == TrackableProgressionState.CANCELLED.value
+                         else -> {
+                             true
+                         }
+                     }
+                 }
+                adapter.setData(filteredTrackables!!)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                Log.i("tab", tab?.text.toString()+" reselected")
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                Log.i("tab", tab?.text.toString()+" unselected")
+            }
+        })
+
 
         binding.floatingActionButton.setOnClickListener{
             findNavController().navigate((R.id.action_listFragment_to_addFragment))
