@@ -209,7 +209,7 @@ class UpdateFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 if(calendar!=null){
                     sendNotification(requireContext(),"Release Notification",
                         "$title should be available now",calendar)
-                    if(calendar.timeInMillis <= Calendar.getInstance().timeInMillis){
+                    if(calendar.timeInMillis < Calendar.getInstance().timeInMillis){
                         Toast.makeText(requireContext(), "Failed saving date! Target in the past.", Toast.LENGTH_LONG).show()
                         reldate = ""
                     }
@@ -293,7 +293,7 @@ class UpdateFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         //need to check if the new entered date is really a new later one. If so then the notification with the old id is overwritten
         val dateFormat = "dd-MM-yyyy"
         val oldcal = stringToCalendar(currentTrackable.releaseDate, dateFormat)
-        if(oldcal != null&&date.timeInMillis <= oldcal.timeInMillis){
+        if((date.timeInMillis < Calendar.getInstance().timeInMillis)||oldcal != null&&(checkSameDate(oldcal, date))){
             return
         }
 
@@ -327,6 +327,12 @@ class UpdateFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             date.timeInMillis,
             pendingIntent
         )*/
+    }
+
+    fun checkSameDate(date1:Calendar, date2:Calendar):Boolean{
+        return date1.get(Calendar.YEAR) == date2.get(Calendar.YEAR) &&
+                date1.get(Calendar.MONTH) == date2.get(Calendar.MONTH) &&
+                date1.get(Calendar.DAY_OF_MONTH) == date2.get(Calendar.DAY_OF_MONTH)
     }
 
     //Functions to realise a Date picker dialog
