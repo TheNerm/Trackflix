@@ -85,6 +85,16 @@ class ListFragment : Fragment() {
             Navigation.findNavController(view).navigate(action)
         }
 
+        binding.statisticsFAB.setOnClickListener{
+            val trackables = mutableListOf<Trackable>()
+            myTrackableViewModel.readAllData.observe(viewLifecycleOwner){ trackableList->
+                trackables.addAll(trackableList)
+            }
+            val trackList = TrackableList(trackables)
+            val action = ListFragmentDirections.actionListFragmentToStatistics(trackList)
+            Navigation.findNavController(view).navigate(action)
+        }
+
         //add menu
         setHasOptionsMenu(true)
 
