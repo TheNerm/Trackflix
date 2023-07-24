@@ -51,6 +51,7 @@ class ListFragment : Fragment() {
     private lateinit var myTrackableViewModel: TrackableViewModel
     private lateinit var tabLayout: TabLayout
     private val tabStartingIndex = 1
+    private lateinit var adapter: ListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,33 +64,19 @@ class ListFragment : Fragment() {
         binding = FragmentListBinding.inflate(layoutInflater, container, false)
         val view = binding.root
 
-        val adapter = ListAdapter()
+        adapter = ListAdapter()
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         myTrackableViewModel = ViewModelProvider(this).get(TrackableViewModel::class.java)
-        myTrackableViewModel.readAllData.observe(viewLifecycleOwner, Observer {trackable ->
-            //adapter.setData(trackable)
-        })
-
-
-
         tabLayout = binding.tabLayout
+        myTrackableViewModel.readAllData.observe(viewLifecycleOwner, Observer {trackable ->
+            tabLayout.getTabAt(tabStartingIndex)?.select()
+        })
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                 val filteredTrackables = myTrackableViewModel.readAllData.value?.filter {
-                     when (tab?.position) {
-                         0 -> it.progressState == TrackableProgressionState.BACKLOG.value
-                         1 -> it.progressState == TrackableProgressionState.IN_PROGRESS.value
-                         2 -> it.progressState == TrackableProgressionState.FINISHED.value
-                         3 -> it.progressState == TrackableProgressionState.CANCELLED.value
-                         else -> {
-                             true
-                         }
-                     }
-                 }
-                adapter.setData(filteredTrackables!!)
+                 updateListVisuals(tab?.position)
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -146,6 +133,21 @@ class ListFragment : Fragment() {
         builder.setTitle("Delete everything?")
         builder.setMessage("Are you sure you want to delete every Trackable?")
         builder.create().show()
+    }
+
+    private fun updateListVisuals(newTabIndex : Int?){
+        val filteredTrackables = myTrackableViewModel.readAllData.value?.filter {
+            when (newTabIndex) {
+                0 -> it.progressState == TrackableProgressionState.BACKLOG.value
+                1 -> it.progressState == TrackableProgressionState.IN_PROGRESS.value
+                2 -> it.progressState == TrackableProgressionState.FINISHED.value
+                3 -> it.progressState == TrackableProgressionState.CANCELLED.value
+                else -> {
+                    true
+                }
+            }
+        }
+        adapter.setData(filteredTrackables!!)
     }
 
 // /*   companion object {
