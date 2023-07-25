@@ -52,8 +52,10 @@ class ListFragment : Fragment() {
     private lateinit var tabLayout: TabLayout
     private val tabStartingIndex = 1
     private lateinit var adapter: ListAdapter
+    private lateinit var filterList: List<String>
+    private var sortingCriteria: SortingCriteria = SortingCriteria.CREATIONDATE
 
-    override fun onCreateView(
+    override  fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
@@ -104,6 +106,13 @@ class ListFragment : Fragment() {
             Navigation.findNavController(view).navigate(action)
         }
 
+        val dialogFragment = FilterDialogFragment()
+        val fragmentManager = childFragmentManager
+        //dialogFragment.dialogListener = this
+        binding.filtering.setOnClickListener {
+
+            dialogFragment.show(fragmentManager, "dialog_fragment_tag")
+        }
         //add menu
         setHasOptionsMenu(true)
 
