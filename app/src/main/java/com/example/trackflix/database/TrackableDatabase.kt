@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.trackflix.model.Trackable
 
-@Database(entities = [Trackable::class], version = 2)
+@Database(entities = [Trackable::class], version = 3)
 abstract class TrackableDatabase: RoomDatabase() {
     abstract fun trackableDao(): TrackableDao
 

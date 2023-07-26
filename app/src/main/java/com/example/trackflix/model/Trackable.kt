@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
+import java.time.LocalDate
 
 @Parcelize
 @Entity(tableName = "trackable_table")
@@ -15,7 +16,8 @@ data class Trackable(
     val goal: Int,
     val type: String,
     val prio: Float,
-    val progressState: String
+    val progressState: String,
+    val releaseDate: String
 ): Parcelable
 
 @Parcelize
