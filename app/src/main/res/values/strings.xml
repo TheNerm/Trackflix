@@ -35,4 +35,7 @@
     <string name="completion">Completion</string>
     <string name="spent">Spent</string>
     <string name="expected">Expected</string>
+    <string name="descending">Descending</string>
+    <string name="ascending">Ascending</string>
+    <string name="alphabetical">Alphabetical</string>
 </resources>

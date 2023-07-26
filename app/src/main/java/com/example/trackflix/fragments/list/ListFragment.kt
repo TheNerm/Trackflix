@@ -2,7 +2,6 @@ package com.example.trackflix.fragments.list
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -11,16 +10,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trackflix.R
 import com.example.trackflix.database.TrackableProgressionState
+import com.example.trackflix.database.TrackableType
 import com.example.trackflix.databinding.FragmentListBinding
 import com.example.trackflix.model.Trackable
 import com.example.trackflix.model.TrackableList
+import com.example.trackflix.viewModel.FilterConfigurationViewModel
 import com.example.trackflix.viewModel.TrackableViewModel
 import com.google.android.material.tabs.TabLayout
 
@@ -34,7 +34,7 @@ import com.google.android.material.tabs.TabLayout
  * Use the [ListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ListFragment : Fragment() {
+class ListFragment : Fragment(){
 //    // TODO: Rename and change types of parameters
 //    private var param1: String? = null
 //    private var param2: String? = null
@@ -52,8 +52,7 @@ class ListFragment : Fragment() {
     private lateinit var tabLayout: TabLayout
     private val tabStartingIndex = 1
     private lateinit var adapter: ListAdapter
-    private lateinit var filterList: List<String>
-    private var sortingCriteria: SortingCriteria = SortingCriteria.CREATIONDATE
+    private lateinit var filterConfigurationViewModel: FilterConfigurationViewModel
 
     override  fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,53 +65,11 @@ class ListFragment : Fragment() {
         binding = FragmentListBinding.inflate(layoutInflater, container, false)
         val view = binding.root
 
-        adapter = ListAdapter()
-        val recyclerView = binding.recyclerView
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        setupRecyclerView()
+        setupViewModels()
+        setupTabs()
+        setupFloatingButtons(view)
 
-        myTrackableViewModel = ViewModelProvider(this).get(TrackableViewModel::class.java)
-        tabLayout = binding.tabLayout
-        myTrackableViewModel.readAllData.observe(viewLifecycleOwner, Observer {trackable ->
-            tabLayout.getTabAt(tabStartingIndex)?.select()
-        })
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                 updateListVisuals(tab?.position)
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-                Log.i("tab", tab?.text.toString()+" reselected")
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                Log.i("tab", tab?.text.toString()+" unselected")
-            }
-        })
-
-
-        binding.floatingActionButton.setOnClickListener{
-            findNavController().navigate((R.id.action_listFragment_to_addFragment))
-        }
-
-        binding.randomFAB.setOnClickListener{
-            //creating a list of current entries and passing them to the randdm fragment
-            val trackables = mutableListOf<Trackable>()
-            myTrackableViewModel.readAllData.observe(viewLifecycleOwner){ trackableList->
-                trackables.addAll(trackableList)
-            }
-            val trackList = TrackableList(trackables)
-            val action = ListFragmentDirections.actionListFragmentToRandomFragment(trackList)
-            Navigation.findNavController(view).navigate(action)
-        }
-
-        val dialogFragment = FilterDialogFragment()
-        val fragmentManager = childFragmentManager
-        //dialogFragment.dialogListener = this
-        binding.filtering.setOnClickListener {
-
-            dialogFragment.show(fragmentManager, "dialog_fragment_tag")
-        }
         //add menu
         setHasOptionsMenu(true)
 
@@ -129,9 +86,73 @@ class ListFragment : Fragment() {
         }
         return super.onOptionsItemSelected(item)
     }
+    private fun setupRecyclerView(){
+        adapter = ListAdapter()
+        val recyclerView = binding.recyclerView
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+    }
+    private fun setupViewModels(){
+        myTrackableViewModel = ViewModelProvider(this)[TrackableViewModel::class.java]
+        filterConfigurationViewModel = ViewModelProvider(this)[FilterConfigurationViewModel::class.java]
+
+        filterConfigurationViewModel.selectedTypeFilters.observe(viewLifecycleOwner) { typeFilters ->
+            tabLayout.selectTab(tabLayout.getTabAt(tabLayout.selectedTabPosition))
+        }
+        filterConfigurationViewModel.selectedSortCriterium.observe(viewLifecycleOwner){sortCriterium ->
+            tabLayout.selectTab(tabLayout.getTabAt(tabLayout.selectedTabPosition))
+        }
+        filterConfigurationViewModel.descending.observe(viewLifecycleOwner){desc ->
+            tabLayout.selectTab(tabLayout.getTabAt(tabLayout.selectedTabPosition))
+        }
+        myTrackableViewModel.readAllData.observe(viewLifecycleOwner) { trackable ->
+            tabLayout.getTabAt(tabStartingIndex)?.select()
+        }
+    }
+    private fun setupTabs(){
+        tabLayout = binding.tabLayout
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                updateListVisuals(tab?.position)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                updateListVisuals(tab?.position)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+        })
+    }
+
+    private fun setupFloatingButtons(view: View){
+        binding.floatingActionButton.setOnClickListener{
+            findNavController().navigate((R.id.action_listFragment_to_addFragment))
+        }
+
+        binding.randomFAB.setOnClickListener{
+            //creating a list of current entries and passing them to the random fragment
+            val trackables = mutableListOf<Trackable>()
+            myTrackableViewModel.readAllData.observe(viewLifecycleOwner){ trackableList->
+                trackables.addAll(trackableList)
+            }
+            val trackList = TrackableList(trackables)
+            val action = ListFragmentDirections.actionListFragmentToRandomFragment(trackList)
+            Navigation.findNavController(view).navigate(action)
+        }
+
+        val dialogFragment = FilterDialogFragment(filterConfigurationViewModel)
+        val fragmentManager = childFragmentManager
+        binding.filtering.setOnClickListener {
+
+            dialogFragment.show(fragmentManager, "dialog_fragment_tag")
+        }
+    }
 
     private fun deleteAllTrackables() {
-        var builder = AlertDialog.Builder(requireContext())
+        val builder = AlertDialog.Builder(requireContext())
         builder.setPositiveButton("Yes"){_,_ ->
             myTrackableViewModel.deleteAllTrackables()
             Toast.makeText(requireContext(), "Successfully removed everything", Toast.LENGTH_SHORT).show()
@@ -144,8 +165,9 @@ class ListFragment : Fragment() {
         builder.create().show()
     }
 
-    private fun updateListVisuals(newTabIndex : Int?){
-        val filteredTrackables = myTrackableViewModel.readAllData.value?.filter {
+    //gets called each time a tab is switched or a filter is applied
+    private fun updateListVisuals(newTabIndex : Int?) {
+        var filteredTrackables = myTrackableViewModel.readAllData.value?.filter {
             when (newTabIndex) {
                 0 -> it.progressState == TrackableProgressionState.BACKLOG.value
                 1 -> it.progressState == TrackableProgressionState.IN_PROGRESS.value
@@ -155,8 +177,42 @@ class ListFragment : Fragment() {
                     true
                 }
             }
+        }?.filter {
+            val selectedFilters = filterConfigurationViewModel.selectedTypeFilters.value
+            if(selectedFilters.isNullOrEmpty()){
+                true
+            }else{
+                selectedFilters.contains(
+                    TrackableType.from(
+                        it.type
+                    )
+                )
+            }
+        }?.sortedBy {
+            when (filterConfigurationViewModel.selectedSortCriterium.value) {
+                SortingCriteria.CREATIONDATE -> it.id
+                SortingCriteria.PRIORITY -> (it.prio * 2).toInt()
+                SortingCriteria.COMPLETION -> (100*(it.currentProgress.toFloat()/it.goal.toFloat())).toInt()
+                SortingCriteria.HOURSSPENT -> it.currentProgress
+                SortingCriteria.EXPECTEDHOURS -> it.goal
+                else -> {
+                    it.id
+                }
+            }
         }
-        adapter.setData(filteredTrackables!!)
+        //for some weird reason alphabetical sorting could not be included in the sortedBy function above
+        //apparently if you use a when inside a sortedBy, every return has to be of the same type (integer above)
+        if(filterConfigurationViewModel.selectedSortCriterium.value == SortingCriteria.ALPHABETICAL){
+            filteredTrackables = filteredTrackables?.sortedBy { it.title }
+        }
+
+        if(filterConfigurationViewModel.descending.value == true){
+            filteredTrackables = filteredTrackables?.reversed()
+        }
+
+        if(filteredTrackables != null){
+            adapter.setData(filteredTrackables)
+        }
     }
 
 // /*   companion object {

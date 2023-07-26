@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="8dp"
@@ -26,9 +26,16 @@
             android:layout_height="wrap_content">
 
             <RadioGroup
+                android:id="@+id/sortRb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/priorityRb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/priority" />
 
                 <RadioButton
                     android:id="@+id/createdRb"
@@ -37,11 +44,10 @@
                     android:text="@string/created" />
 
                 <RadioButton
-                    android:id="@+id/priorityRB"
+                    android:id="@+id/alphabeticalRb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/priority" />
+                    android:text="@string/alphabetical" />
 
                 <RadioButton
                     android:id="@+id/completionRb"
@@ -65,11 +71,19 @@
 
         </HorizontalScrollView>
 
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/descSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:checked="true"
+            android:text="@string/descending" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="#03D9C4" />
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -119,27 +133,7 @@
             android:background="#03D9C4"
             android:layout_marginBottom="4dp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cancel"
-                android:id="@+id/btn_cancel"
-                android:layout_weight="1" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ok"
-                android:id="@+id/btn_ok"
-                android:layout_weight="1"
-                android:layout_marginStart="9dp"/>
-        </LinearLayout>
     </LinearLayout>
 
 

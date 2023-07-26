@@ -13,12 +13,24 @@ class FilterConfigurationViewModel : ViewModel() {
     private val _selectedTypeFilters = MutableLiveData<List<TrackableType>>()
     val selectedTypeFilters: LiveData<List<TrackableType>> get() = _selectedTypeFilters
 
-    // Create methods to update the LiveData properties
+    private val _descending = MutableLiveData<Boolean>()
+    val descending: MutableLiveData<Boolean> get() = _descending
+
+    init {
+        _selectedSortCriterium.value = SortingCriteria.PRIORITY
+        _selectedTypeFilters.value = ArrayList()
+        _descending.value = true
+    }
+
     fun setSortCriterium(sortingCriterium: SortingCriteria) {
         _selectedSortCriterium.value = sortingCriterium
     }
 
-    fun addSelectedTypeFilters(selectedTypeFilters: List<TrackableType>) {
+    fun setSelectedFilters(selectedTypeFilters: List<TrackableType>) {
         _selectedTypeFilters.value = selectedTypeFilters
+    }
+
+    fun setDescending(descending: Boolean){
+        _descending.value = descending
     }
 }
