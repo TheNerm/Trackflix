@@ -14,6 +14,8 @@ import com.example.trackflix.database.TrackableProgressionState
 import com.example.trackflix.databinding.FragmentAddBinding
 import com.example.trackflix.model.Trackable
 import com.example.trackflix.viewModel.TrackableViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -108,7 +110,8 @@ class AddFragment : Fragment() {
                 progressState = TrackableProgressionState.FINISHED.value
             }
             //id is primary key and will be auto-generated, so we just need to specify to start at 0
-            val trackable = Trackable(0, title, progress, goal, type,prio, progressState)
+            val reldate = ""
+            val trackable = Trackable(0, title, progress, goal, type,prio, progressState, reldate)
             //add data to database
             myTrackableViewModel.addTrackable(trackable)
             Toast.makeText(requireContext(), "Successfully added!", Toast.LENGTH_LONG).show()

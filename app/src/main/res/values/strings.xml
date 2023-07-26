@@ -38,4 +38,6 @@
     <string name="descending">Descending</string>
     <string name="ascending">Ascending</string>
     <string name="alphabetical">Alphabetical</string>
+    <string name="notReleased">not yet released</string>
+    <string name="releaseDate">Release Date</string>
 </resources>
