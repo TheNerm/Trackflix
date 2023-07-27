@@ -26,6 +26,18 @@
     <string name="randFragUserinteraction2">out of</string>
     <string name="randFragUserinteraction3">"So there is still "</string>
     <string name="randFragUserInteraction4">" left for u to enjoy!"</string>
+    <string name="sortingCriteria">Sort by</string>
+    <string name="filter">Filter by</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="created">Created</string>
+    <string name="priority">Priority</string>
+    <string name="completion">Completion</string>
+    <string name="spent">Spent</string>
+    <string name="expected">Expected</string>
+    <string name="descending">Descending</string>
+    <string name="ascending">Ascending</string>
+    <string name="alphabetical">Alphabetical</string>
     <string name="notReleased">not yet released</string>
     <string name="releaseDate">Release Date</string>
 </resources>
