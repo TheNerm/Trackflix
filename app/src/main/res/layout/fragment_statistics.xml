@@ -10,20 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/Statistics"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <LinearLayout
             android:id="@+id/linearLayout4"
             android:layout_width="match_parent"
@@ -33,14 +19,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Hours watched:"
+                android:text="Hours watched: "
                 android:textAlignment="textEnd" />
 
             <TextView
@@ -66,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Pages read:"
+                android:text="Pages read: "
                 android:textAlignment="textEnd" />
 
             <TextView
@@ -92,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Items in Progress:"
+                android:text="Items in Progress: "
                 android:textAlignment="textEnd" />
 
             <TextView
@@ -118,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Items finished:"
+                android:text="Items finished: "
                 android:textAlignment="textEnd" />
 
             <TextView
@@ -144,7 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Items cancelled:"
+                android:text="Items cancelled: "
                 android:textAlignment="textEnd" />
 
             <TextView
@@ -169,7 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Unreleased items:"
+                android:text="Unreleased items: "
                 android:textAlignment="textEnd" />
 
             <TextView
@@ -195,7 +181,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Items in Backlog:"
+                android:text="Items in Backlog: "
                 android:textAlignment="textEnd" />
 
             <TextView
@@ -221,7 +207,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Hours played:"
+                android:text="Hours played: "
                 android:textAlignment="textEnd" />
 
             <TextView
@@ -247,7 +233,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Hours yet to be watch:"
+                android:text="Hours yet to be watched: "
                 android:textAlignment="textEnd" />
 
             <TextView
@@ -273,7 +259,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Pages yet to be read:"
+                android:text="Pages yet to be read: "
                 android:textAlignment="textEnd" />
 
             <TextView
@@ -299,7 +285,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Hours yet to be played:"
+                android:text="Hours yet to be played: "
                 android:textAlignment="textEnd" />
 
             <TextView
