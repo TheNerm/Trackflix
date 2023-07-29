@@ -1,6 +1,5 @@
 package com.example.trackflix.fragments.update
 
-import android.Manifest
 import android.app.AlarmManager
 import android.app.DatePickerDialog
 import android.app.NotificationChannel
@@ -8,8 +7,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,17 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.RadioButton
-import android.widget.Switch
-import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.trackflix.MainActivity
 import com.example.trackflix.R
 import com.example.trackflix.database.TrackableProgressionState
 import com.example.trackflix.databinding.FragmentUpdateBinding
@@ -35,8 +25,6 @@ import com.example.trackflix.model.Trackable
 import com.example.trackflix.notification.NotificationReceiver
 import com.example.trackflix.viewModel.TrackableViewModel
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 
@@ -356,20 +344,7 @@ class UpdateFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.releaseDateET.setText(formattedDate)
     }
 
-    fun stringToCalendar(dateString: String, dateFormat: String): Calendar? {
-        val calendar = Calendar.getInstance()
-        try {
-            val sdf = SimpleDateFormat(dateFormat)
-            val date = sdf.parse(dateString)
-            if (date != null) {
-                calendar.time = date
-                return calendar
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
-    }
+
 
     /**
      * Companion object for the fragment. Whenever the newInstance Function is called a new instance of
@@ -395,6 +370,19 @@ class UpdateFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             fragment.arguments = args
             return fragment
         }
-
+        fun stringToCalendar(dateString: String, dateFormat: String): Calendar? {
+            val calendar = Calendar.getInstance()
+            try {
+                val sdf = SimpleDateFormat(dateFormat)
+                val date = sdf.parse(dateString)
+                if (date != null) {
+                    calendar.time = date
+                    return calendar
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return null
+        }
     }
 }
