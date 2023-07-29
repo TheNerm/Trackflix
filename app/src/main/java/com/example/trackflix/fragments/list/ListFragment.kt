@@ -76,21 +76,17 @@ class ListFragment : Fragment() {
 
         binding.randomFAB.setOnClickListener{
             //creating a list of current entries and passing them to the randdm fragment
-            val trackables = mutableListOf<Trackable>()
-            myTrackableViewModel.readAllData.observe(viewLifecycleOwner){ trackableList->
-                trackables.addAll(trackableList)
-            }
-            val trackList = TrackableList(trackables)
+            val trackableList: List<Trackable>? = myTrackableViewModel.readAllData.value
+            val trackList = TrackableList(trackableList!!)
             val action = ListFragmentDirections.actionListFragmentToRandomFragment(trackList)
             Navigation.findNavController(view).navigate(action)
         }
 
         binding.statisticsFAB.setOnClickListener{
-            val trackables = mutableListOf<Trackable>()
-            myTrackableViewModel.readAllData.observe(viewLifecycleOwner){ trackableList->
-                trackables.addAll(trackableList)
-            }
-            val trackList = TrackableList(trackables)
+            //val trackables = mutableListOf<Trackable>()
+            //trackables.addAll(myTrackableViewModel.readAllData.value)
+            val trackableList: List<Trackable>? = myTrackableViewModel.readAllData.value
+            val trackList = TrackableList(trackableList!!)
             val action = ListFragmentDirections.actionListFragmentToStatistics(trackList)
             Navigation.findNavController(view).navigate(action)
         }
