@@ -134,15 +134,22 @@ class ListFragment : Fragment(){
 
         binding.randomFAB.setOnClickListener{
             //creating a list of current entries and passing them to the random fragment
-            val trackables = mutableListOf<Trackable>()
-            myTrackableViewModel.readAllData.observe(viewLifecycleOwner){ trackableList->
-                trackables.addAll(trackableList)
-            }
-            val trackList = TrackableList(trackables)
+            val trackableList: List<Trackable>? = myTrackableViewModel.readAllData.value
+            val trackList = TrackableList(trackableList!!)
             val action = ListFragmentDirections.actionListFragmentToRandomFragment(trackList)
             Navigation.findNavController(view).navigate(action)
         }
 
+        binding.statisticsFAB.setOnClickListener{
+            //passing list to next fragment
+            val trackableList: List<Trackable>? = myTrackableViewModel.readAllData.value
+            val trackList = TrackableList(trackableList!!)
+            val action = ListFragmentDirections.actionListFragmentToStatistics(trackList)
+            Navigation.findNavController(view).navigate(action)
+        }
+
+        //add menu
+        setHasOptionsMenu(true)
         val dialogFragment = FilterDialogFragment(filterConfigurationViewModel)
         val fragmentManager = childFragmentManager
         binding.filtering.setOnClickListener {

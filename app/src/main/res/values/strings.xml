@@ -40,4 +40,5 @@
     <string name="alphabetical">Alphabetical</string>
     <string name="notReleased">not yet released</string>
     <string name="releaseDate">Release Date</string>
+    <string name="Statistics">Statistics</string>
 </resources>

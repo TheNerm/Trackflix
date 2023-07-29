@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_listFragment_to_randomFragment"
             app:destination="@id/randomFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_statistics"
+            app:destination="@id/statistics" />
     </fragment>
     <fragment
         android:id="@+id/addFragment"
@@ -47,10 +50,22 @@
     <fragment
         android:id="@+id/randomFragment"
         android:name="com.example.trackflix.fragments.random.RandomFragment"
-        android:label="fragment_random"
+        android:label="Random Suggestion"
         tools:layout="@layout/fragment_random" >
         <action
             android:id="@+id/action_randomFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+        <argument
+            android:name="trackableList"
+            app:argType="com.example.trackflix.model.TrackableList" />
+    </fragment>
+    <fragment
+        android:id="@+id/statistics"
+        android:name="com.example.trackflix.statistics.Statistics"
+        android:label="@string/Statistics"
+        tools:layout="@layout/fragment_statistics" >
+        <action
+            android:id="@+id/action_statistics_to_listFragment"
             app:destination="@id/listFragment" />
         <argument
             android:name="trackableList"
