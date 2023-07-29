@@ -14,6 +14,9 @@ import com.example.trackflix.databinding.FragmentStatisticsBinding
 import com.example.trackflix.fragments.random.RandomFragmentArgs
 import com.example.trackflix.model.Trackable
 
+/**
+ * The Fragment holding the information about the Statistics
+ */
 class Statistics : Fragment() {
     private lateinit var binding: FragmentStatisticsBinding
     private val args by navArgs<StatisticsArgs>()
