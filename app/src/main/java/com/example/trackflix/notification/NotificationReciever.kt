@@ -12,12 +12,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.example.trackflix.MainActivity
 import com.example.trackflix.R
 
 class NotificationReceiver : BroadcastReceiver() {
 
-    //The notification Reciever recieves the notification and then uses the showNotification() method to create one on the phone
+    //The notification Receiver receives the notification and then uses the showNotification() method to create one on the phone
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onReceive(context: Context, intent: Intent) {
         val id = intent.getIntExtra("notification_id",0)

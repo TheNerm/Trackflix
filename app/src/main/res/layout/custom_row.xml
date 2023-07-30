@@ -8,8 +8,9 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
-        android:layout_width="362dp"
-        android:layout_height="128dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="120dp"
         android:layout_gravity="center"
         app:cardBackgroundColor="@color/card_default"
         app:cardCornerRadius="8dp"
@@ -18,42 +19,56 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ProgressBar
+        <com.example.trackflix.fragments.list.CustomProgressBar
             android:id="@+id/progressBar"
-            style="@android:style/Widget.ProgressBar.Horizontal"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:progressDrawable="@drawable/custom_progress_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:minHeight="120dp"
             android:padding="8dp"
             android:progress="0"/>
 
+        <RatingBar
+            android:id="@+id/priorityRB"
+            android:layout_width="wrap_content"
+            android:layout_height="39dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginEnd="-32dp"
+            android:layout_gravity="bottom|end"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:progressDrawable="@drawable/ratingbar"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:stepSize="0.5" />
+
         <TextView
-            android:id="@+id/tbPercentage"
+            android:id="@+id/progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|start"
             android:layout_marginStart="8dp"
             android:padding="8dp"
-            android:text="Percentage"
+            android:text="1000/1000"
             android:textSize="24sp" />
 
-        <TextView
-            android:id="@+id/tbPriority"
+        <ImageView
+            android:id="@+id/typeSymbol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:padding="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="Priority"
-            android:textSize="24sp" />
+            android:layout_gravity="bottom|center"
+            android:padding="12dp"
+            android:src="@drawable/book" />
 
         <TextView
             android:id="@+id/tbTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center_horizontal"
-            android:padding="8dp"
-            android:text="Title"
+            android:padding="12dp"
+            android:maxHeight="80dp"
+            android:text="@string/title"
             android:textSize="24sp" />
 
     </androidx.cardview.widget.CardView>

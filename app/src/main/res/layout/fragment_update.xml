@@ -40,25 +40,29 @@
             android:id="@+id/backlog"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/backlog" />
+            android:text="@string/backlog"
+            android:textSize="11sp"/>
 
         <RadioButton
             android:id="@+id/inProgress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/inProgress" />
+            android:text="@string/inProgress"
+            android:textSize="11sp"/>
 
         <RadioButton
             android:id="@+id/finished"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/finished" />
+            android:text="@string/finished"
+            android:textSize="11sp"/>
 
         <RadioButton
             android:id="@+id/cancelled"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/cancelled" />
+            android:text="@string/cancelled"
+            android:textSize="11sp"/>
 
     </RadioGroup>
 
@@ -151,7 +155,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="Priority"
+            android:text="@string/priority"
             android:textSize="18sp" />
 
         <RatingBar
@@ -201,7 +205,7 @@
 
     </RadioGroup>
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/released_SW"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

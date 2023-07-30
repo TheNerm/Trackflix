@@ -2,32 +2,24 @@ package com.example.trackflix.fragments.random
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.example.trackflix.R
 import com.example.trackflix.databinding.FragmentRandomBinding
 import com.example.trackflix.model.Trackable
-import com.example.trackflix.viewModel.TrackableViewModel
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
 /**
  * A simple [Fragment] subclass.
- * Use the [RandomFragment.newInstance] factory method to
- * create an instance of this fragment.
  */
 class RandomFragment : Fragment() {
-    private lateinit var myTrackableViewModel: TrackableViewModel
     private lateinit var binding: FragmentRandomBinding
     private val args by navArgs<RandomFragmentArgs>()
-    private var type = "none"
+    private var type = "All"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +52,7 @@ class RandomFragment : Fragment() {
             }else if(selectedChoice == "Game"){
                 type = "Game"
             }else{
-                type = "none"
+                type = "All"
             }
         }
 
@@ -75,7 +67,7 @@ class RandomFragment : Fragment() {
     fun init(){
         val filteredTrackables:List<Trackable>
 
-        if(type != "none") {
+        if(type != "All") {
             filteredTrackables = args.trackableList.trackables.filter { trackable ->
                 ((trackable.type == type)&&((trackable.progressState == "inProgress")||(trackable.progressState == "backlog")))
             }
@@ -106,9 +98,13 @@ class RandomFragment : Fragment() {
         Log.d("TypeRand",randTrackable.type)
 
         binding.titleTV.text = randTrackable.title
-        binding.consumedTV.text = randTrackable.currentProgress.toString()
-        binding.goalTV.text = randTrackable.goal.toString()
-        binding.diffrenceTV.text = (randTrackable.goal-randTrackable.currentProgress).toString()
+        binding.consumedTV.text = randTrackable.currentProgress.toString() + ' '
+        binding.goalTV.text = randTrackable.goal.toString() + ' '
+        var diff = (randTrackable.goal-randTrackable.currentProgress)
+        if(diff < 0){
+            diff = 0
+        }
+        binding.diffrenceTV.text = diff.toString()
 
         if(randTrackable.type == "Book"){
             binding.diffTypeTV.setText(R.string.sides)
@@ -134,23 +130,4 @@ class RandomFragment : Fragment() {
         binding.consumedTV.isVisible = true
     }
 
-//    companion object {
-//        /**
-//         * Use this factory method to create a new instance of
-//         * this fragment using the provided parameters.
-//         *
-//         * @param param1 Parameter 1.
-//         * @param param2 Parameter 2.
-//         * @return A new instance of fragment RandomFragment.
-//         */
-//        // TODO: Rename and change types and number of parameters
-//        @JvmStatic
-//        fun newInstance(param1: String, param2: String) =
-//            RandomFragment().apply {
-//                arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-//                    putString(ARG_PARAM2, param2)
-//                }
-//            }
-//    }
 }
