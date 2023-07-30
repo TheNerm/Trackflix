@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -24,6 +25,7 @@ import com.example.trackflix.viewModel.FilterConfigurationViewModel
 import com.example.trackflix.viewModel.TrackableViewModel
 import com.google.android.material.tabs.TabLayout
 
+
 //// TODO: Rename parameter arguments, choose names that match
 //// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //private const val ARG_PARAM1 = "param1"
@@ -34,7 +36,7 @@ import com.google.android.material.tabs.TabLayout
  * Use the [ListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ListFragment : Fragment(){
+class ListFragment : Fragment(), CustomProgressBar.ProgressUpdater{
 //    // TODO: Rename and change types of parameters
 //    private var param1: String? = null
 //    private var param2: String? = null
@@ -68,6 +70,7 @@ class ListFragment : Fragment(){
         setupRecyclerView()
         setupViewModels()
         setupTabs()
+        tabLayout.selectTab(tabLayout.getTabAt(tabStartingIndex))
         setupFloatingButtons(view)
 
         //add menu
@@ -88,6 +91,7 @@ class ListFragment : Fragment(){
     }
     private fun setupRecyclerView(){
         adapter = ListAdapter()
+        adapter.progressUpdater =this
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -97,16 +101,17 @@ class ListFragment : Fragment(){
         filterConfigurationViewModel = ViewModelProvider(this)[FilterConfigurationViewModel::class.java]
 
         filterConfigurationViewModel.selectedTypeFilters.observe(viewLifecycleOwner) { typeFilters ->
-            tabLayout.selectTab(tabLayout.getTabAt(tabLayout.selectedTabPosition))
+            updateListVisuals(null)
+            setFilterButtonColor()
         }
         filterConfigurationViewModel.selectedSortCriterium.observe(viewLifecycleOwner){sortCriterium ->
-            tabLayout.selectTab(tabLayout.getTabAt(tabLayout.selectedTabPosition))
+            updateListVisuals(null)
         }
         filterConfigurationViewModel.descending.observe(viewLifecycleOwner){desc ->
-            tabLayout.selectTab(tabLayout.getTabAt(tabLayout.selectedTabPosition))
+            updateListVisuals(null)
         }
         myTrackableViewModel.readAllData.observe(viewLifecycleOwner) { trackable ->
-            tabLayout.getTabAt(tabStartingIndex)?.select()
+            updateListVisuals(null)
         }
     }
     private fun setupTabs(){
@@ -174,8 +179,9 @@ class ListFragment : Fragment(){
 
     //gets called each time a tab is switched or a filter is applied
     private fun updateListVisuals(newTabIndex : Int?) {
+        val tabIndex:Int? = newTabIndex ?: tabLayout.getTabAt(tabLayout.selectedTabPosition)?.position
         var filteredTrackables = myTrackableViewModel.readAllData.value?.filter {
-            when (newTabIndex) {
+            when (tabIndex) {
                 0 -> it.progressState == TrackableProgressionState.BACKLOG.value
                 1 -> it.progressState == TrackableProgressionState.IN_PROGRESS.value
                 2 -> it.progressState == TrackableProgressionState.FINISHED.value
@@ -220,6 +226,21 @@ class ListFragment : Fragment(){
         if(filteredTrackables != null){
             adapter.setData(filteredTrackables)
         }
+    }
+
+    //change color of filter button to indicate that filters are active
+    private fun setFilterButtonColor(){
+        val color = if(filterConfigurationViewModel.selectedTypeFilters.value.isNullOrEmpty()){
+            R.color.secondaryColor
+        }else{
+            R.color.teal_700
+        }
+        val colorStateList = ContextCompat.getColorStateList(requireContext(), color)
+        binding.filtering.backgroundTintList = colorStateList
+    }
+
+    override fun updateProgress(trackable: Trackable) {
+        myTrackableViewModel.updateTrackable(trackable)
     }
 
 // /*   companion object {

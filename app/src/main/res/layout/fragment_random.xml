@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Our random suggestion for u is:"
+            android:text="@string/our_random_suggestion_for_u_is"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -190,10 +190,10 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
             <RadioButton
-                android:id="@+id/none_RB"
+                android:id="@+id/all_RB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/none" />
+                android:text="@string/all" />
 
             <RadioButton
                 android:id="@+id/book_RB"

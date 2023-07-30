@@ -21,7 +21,7 @@
     <string name="back">Back</string>
     <string name="reroll">Reroll</string>
     <string name="randFragError">"The provided List contains no Elements that haven\'t been watched yet.\n Please check if u have trackables that have the status in Progress or in Backlog!"</string>
-    <string name="none">none</string>
+    <string name="all">All</string>
     <string name="RandFragUserinteraction1">U have already consumed:</string>
     <string name="randFragUserinteraction2">out of</string>
     <string name="randFragUserinteraction3">"So there is still "</string>
@@ -43,4 +43,5 @@
     <string name="Statistics">Statistics</string>
     <string name="absoluteProgress">%1$d/%2$d %3$s</string>
     <string name="percentageProgress">%1$d%%</string>
+    <string name="our_random_suggestion_for_u_is">Our random suggestion for u is:</string>
 </resources>
