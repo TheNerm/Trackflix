@@ -28,9 +28,6 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
 /**
  * A simple [Fragment] subclass.
  * Use the [UpdateFragment.newInstance] factory method to
@@ -356,11 +353,8 @@ class UpdateFragment : Fragment(), DatePickerDialog.OnDateSetListener {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
          * @return A new instance of fragment UpdateFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(trackable: Trackable): UpdateFragment{
             val fragment = UpdateFragment()

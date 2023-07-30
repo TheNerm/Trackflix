@@ -3,7 +3,6 @@ package com.example.trackflix.fragments.update
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -11,25 +10,19 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.trackflix.R
-import com.example.trackflix.databinding.FragmentUpdateBinding
 import com.example.trackflix.databinding.FragmentUpdatePagerBinding
 import com.example.trackflix.model.Trackable
 import com.example.trackflix.viewModel.TrackableViewModel
 import kotlin.properties.Delegates
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
 /**
  * A simple [Fragment] subclass.
- * Use the [UpdateFragmentPager.newInstance] factory method to
- * create an instance of this fragment.
  */
 
 /**
@@ -102,7 +95,7 @@ class UpdateFragmentPager : Fragment() {
      * This function is responsible for deleting the right item in the List when the delete button is pressed
      */
     private fun deleteTrackable() {
-        var builder = AlertDialog.Builder(requireContext())
+        val builder = AlertDialog.Builder(requireContext())
         builder.setPositiveButton("Yes"){_,_ ->
             myTrackableViewModel.deleteTrackable(currentTrackable)
             Toast.makeText(requireContext(), "Successfully removed: ${currentTrackable.title}", Toast.LENGTH_SHORT).show()
@@ -115,24 +108,4 @@ class UpdateFragmentPager : Fragment() {
         builder.setMessage("Are you sure you want to delete ${currentTrackable.title}?")
         builder.create().show()
     }
-
-//    companion object {
-//        /**
-//         * Use this factory method to create a new instance of
-//         * this fragment using the provided parameters.
-//         *
-//         * @param param1 Parameter 1.
-//         * @param param2 Parameter 2.
-//         * @return A new instance of fragment updateFragmentPager.
-//         */
-//        // TODO: Rename and change types and number of parameters
-//        @JvmStatic
-//        fun newInstance(param1: String, param2: String) =
-//            updateFragmentPager().apply {
-//                arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-//                    putString(ARG_PARAM2, param2)
-//                }
-//            }
-//    }
 }
